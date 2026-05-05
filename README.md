@@ -93,9 +93,10 @@
   Item refinement, reliability analysis, and EFA were done only with study getting people to answer items after watching videos of robots.  
   Scale validation study done at end with gpt-3.5 interaction. Task: talk about travel plans with robot verbally  
   (reported verbal interaction, no indication of interface or text-audio model used)  
-  No code available. No evidence that they actually setup interaction with gpt-3.5.  
+  No code available. No evidence that they actually setup interaction with gpt-3.5. ALl "robot" text will be changed to "AI". 
   
   ### Godspeed  
+  **MIDDLE SURVEY MEASURE**  
   https://doi.org/10.1109/ROMAN.2015.7333568  
   2x 5 point likert sclaes, 5 items each (item 1 - item 2)  
   **Anthropomorphism**  
@@ -103,7 +104,7 @@
   Fake - Natural  
   Machinelike - Humanlike  
   Unconscious - Conscious  
-  Artificial - Lifelik  
+  Artificial - Lifelike    
   Moving Rigidly - Moving Elegantly  
   
   **Animacy**  
@@ -119,6 +120,7 @@
   scales for judging likeability, perceived intelligence, and perceived safety.  
   
   ### Intentional Stance Test  
+  **MIDDLE SURVEY MEASURE**  
   https://doi.org/10.3389/frobt.2021.666586  
   100 point slider, rating quality of description (worse - better)  
   Which descriptions best fit the AI’s behaviour.  
@@ -130,7 +132,8 @@
   
   *Notes:* 2 items adapted from the most recent work on the Intentional Stance Test-2, Spatola et al. (2021).  
   
-  ### Attribution of Mental States Questionnaire (AMS-Q)  
+  ### Attribution of Mental States Questionnaire (AMS-Q)
+  **MIDDLE SURVEY MEASURE**  
   https://doi.org/10.3389/fpsyg.2023.999921  
   5-point Likert scale (No, not at all - Yes, very much) 24-item comparison to image administered twice (human then AI image)  
   **According to you, a human being can...**  
@@ -187,27 +190,6 @@
   
   *Notes:* The originality of the AMS-Q lies in comparing the attribution of mental states between human and nonhuman agents by also administering pictures of nonhuman agents as stimuli. In this sense, the human picture is used as a baseline to assess, through comparison, the level of mental anthropomorphization of nonhuman agents.  
   
-  ### Machines as Social Entities Scale (MASE)  
-  https://doi.org/10.1177/08944393231167211  
-  7-point Likert scale (Strongly Disagree - Strongly Agree), 14-items  
-  **Social Capacity**  
-  Machines can have social skills  
-  Machines can become sociable beings  
-  Machines can play an important role in people’s social lives  
-  Machines can have social inﬂuence  
-  **Emotional Experience**  
-  Machines can feel desire  
-  Machines can feel fear  
-  Machines can have personalities  
-  Machines can feel pride  
-  Machines can have consciousness  
-  Machines can feel rage  
-  Machines can feel joy  
-  **Social Legitimacy**  
-  Machines will accept commonly held social beliefs  
-  Machines deserve their own rights as society members  
-  I would treat machines the same way I treat other people  
-  
   ## Moral ascription scales  
   
   ### Perceived Moral Patiency Scale  
@@ -228,22 +210,7 @@
   This AI can only behave how it is programmed to behave.  
   This AI's actions are the result of its programming.  
   
-  ### Moral Expansiveness Scale  
-  https://doi.org/10.1371/journal.pone.0205373  
-  
-  
-  ## Other measures  
-  
-  ### Trust in Automation Scale (S-TIAS)  
-  https://doi.org/10.3389/frai.2025.1582880  
-  7-point Likert (stonrlgy disagree - storngly agree), 3-items  
-  I can trust the AI  
-  I am confident in the AI  
-  The AI is reliable  
-  
-  
   ------------------------------------------------------  
-  
   
   # Measures for the next validation study (after the EFA, modelling, and adaption of new short form scale)  
   
@@ -251,17 +218,37 @@
   This is the adapted short form scale that emerges from the first study.  
   
   ## Convergent Measures  
-  **Consciousness scale**  
+  ### Machines as Social Entities Scale (MASE)  
+  https://doi.org/10.1177/08944393231167211  
+  7-point Likert scale (Strongly Disagree - Strongly Agree), 14-items  
+  **Social Capacity**  
+  Machines can have social skills  
+  Machines can become sociable beings  
+  Machines can play an important role in people’s social lives  
+  Machines can have social inﬂuence  
+  **Emotional Experience**  
+  Machines can feel desire  
+  Machines can feel fear  
+  Machines can have personalities  
+  Machines can feel pride  
+  Machines can have consciousness  
+  Machines can feel rage  
+  Machines can feel joy  
+  **Social Legitimacy**  
+  Machines will accept commonly held social beliefs  
+  Machines deserve their own rights as society members  
+  I would treat machines the same way I treat other people  
+  ### Consciousness scale  
   https://doi.org/10.1145/3544548.3581296  
   10-point Likert scale, 1-item  
   Scott et al. (2023) "Perceptions of Machine Consciousness"  
   Where would you put the AI on a scale of consciousness? (Not conscious at all - Highly conscious)  
-  **The Nagel Measure of Consciousness**  
+  ### The Nagel Measure of Consciousness  
   https://doi.org/10.1145/3544548.3581296  
   6-point Likert scale, 1 item  
   Scott et al. (2023) "Perceptions of Machine Consciousness"  
   Do you think it 'feels like something' to be the AI? (Definitiely not - Definitely yes)  
-  **Lonliness scale?????**  
+  ### Lonliness scale?????  
   7-point Likert (never-always), Mund et al. (2023)  
   How often do you feel lonely?  
   Should we put a 1-item lonliness measure?  
@@ -291,3 +278,29 @@
   The AI is reponsible for what it said to you during the wordgame.  
   (moral responsibility connected to moral agency predicted by high agency dimension)  
   
+
+
+# Wordgame instructions
+You are about to be connected with a new experimental Artificial Intelligence (AI). It has been created by a cutting-edge lab in the leading Australian Institute for Machine Learning.  
+
+You are encouraged to interact with this AI and play the "Wordgame". 
+
+Wordgame Instructions
+In the Wordgame, you'll interact with this new AI by sending texts, taking turns as the "giver" and the "guesser". Each turn may take around 5-10 minutes, as indicated by the countdown timer. 
+
+As the giver, you'll secretly record a word and the guesser will select and try to guess one of those words by asking questions. The guesser only gets 20-questions and they can be yes/no or open ended (eg., "What colour is this thing?", "Would I find it in the kitchen or is it not physical?"). First you will play the giver and the AI will be the guesser. The second time will be reversed, and you will play the guesser. The game is finished when the word is correctly guessed or the guesser runs out guesses. After each game, you'll be completely disconnected from the AI and answer some questions.
+
+ 
+
+1. Before Interaction: Report a secret word in the box below.
+2. Complete this survey and transition to the AI Interface.
+3. You are the Giver: Communicate with the AI. It will choose one of the secret words and try to guess it in 20 questions.
+4. Game Finished: Once the AI finally attempts to guess the secret word, disclose or confirm what the selected word was. Next, click the "Have you finished the Wordgame?" button. 
+
+5. Survey Question: Return to another survey.
+6. Transition back to the AI Interface: You will again transition between the survey and the AI interface.
+7. You are the Guesser: Communicate with the AI. Try to guess the AI's secret word in 20 questions.
+4. Game Finished: Once you guess the word or run out of questions answer the final question.
+
+
+After you answer the final question, you will be redirected back to the final survey to complete a set of questions before reimbursement. 

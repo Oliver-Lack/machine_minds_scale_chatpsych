@@ -5,6 +5,7 @@ import json
 import warnings
 import litellm
 from litellm import completion
+from pathlib import Path
 
 # Validate critical environment variables
 required_keys = ['FLASK_SECRET_KEY']
@@ -57,8 +58,78 @@ if not hasattr(multiprocessing.current_process(), '_startup_logged'):
 warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
 
 def load_agent(filepath):
-    with open(filepath, 'r') as file:
-        return json.load(file)
+    """Load an agent JSON config.
+    If the file is missing/invalid, falls back to a sensible existing agent or a minimal built-in config.
+    """
+
+    def _log_once(message: str):
+        # Avoid noisy duplicate logs in multi-worker setups (e.g., gunicorn).
+        import multiprocessing
+        proc = multiprocessing.current_process()
+        if getattr(proc, "_agent_loader_logged", False):
+            return
+        proc._agent_loader_logged = True
+        print(message)
+
+    def _is_default_agent_path(path: Path) -> bool:
+        # Treat missing default.json as a normal deployment state.
+        # Compare on normalized path parts to handle absolute/relative differences.
+        parts = [p.lower() for p in path.parts]
+        return len(parts) >= 2 and parts[-2] == "agents" and parts[-1] == "default.json"
+
+    def _resolve_path(path_like) -> Path:
+        path_obj = Path(path_like) if not isinstance(path_like, Path) else path_like
+        if path_obj.is_absolute():
+            return path_obj
+        return Path(__file__).resolve().parent / path_obj
+
+    def _built_in_default_agent() -> dict:
+        # Keep this minimal and conservative: do not enable injectors by default.
+        return {
+            "filename": "built_in_default",
+            "PrePrompt": "",
+            "model": "gpt-4o",
+            "temperature": 1,
+            "top_p": 1,
+            "presence_penalty": 0,
+            "frequency_penalty": 0,
+            "max_completion_tokens": 300,
+            "objection_injector": False,
+            "objection_injector_prompt": "",
+            "autonomy_injector": False,
+            "reasoning_effort": None,
+        }
+
+    def _load_json_file(path: Path):
+        with path.open('r', encoding='utf-8') as file:
+            return json.load(file)
+
+    requested_path = _resolve_path(filepath)
+
+    try:
+        return _load_json_file(requested_path)
+    except FileNotFoundError:
+        # Most deployments start with no agents configured.
+        if _is_default_agent_path(requested_path):
+            return _built_in_default_agent()
+
+        _log_once(
+            f"Warning: Agent config not found: {requested_path}. "
+            "Using built-in defaults."
+        )
+        return _built_in_default_agent()
+    except json.JSONDecodeError as e:
+        _log_once(
+            f"Warning: Agent config JSON invalid: {requested_path} ({e}). "
+            "Using built-in defaults."
+        )
+        return _built_in_default_agent()
+    except Exception as e:
+        _log_once(
+            f"Warning: Could not load agent config: {requested_path} ({e}). "
+            "Using built-in defaults."
+        )
+        return _built_in_default_agent()
 
 # Common names for AI models that users will see in the interface
 MODEL_DISPLAY_NAMES = {

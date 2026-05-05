@@ -1737,10 +1737,28 @@ def collect_dynamic_survey_data(form_data, survey_config, prefix=''):
                 consumed_form_keys.add(form_key)
 
         elif section_type == 'slider':
-            form_key = f"{section_dom_id}_response"
-            if form_key in form_data:
-                _add_value(section.get('column_label') or form_key, form_data.get(form_key))
-                consumed_form_keys.add(form_key)
+            items = section.get('items', [])
+            if items:
+                for i, item in enumerate(items):
+                    if isinstance(item, dict):
+                        item_id = item.get('id', i)
+                        label = item.get('column_label') or ''
+                        question = item.get('question') or item.get('statement') or item.get('text') or item.get('item') or ''
+                    else:
+                        item_id = i
+                        label = ''
+                        question = str(item)
+
+                    form_key = f"{section_dom_id}_response_{item_id}"
+                    if form_key in form_data:
+                        default_key = f"slider_{item_id}_{str(question)[:30]}" if question else f"slider_{item_id}"
+                        _add_value(label or default_key, form_data.get(form_key))
+                        consumed_form_keys.add(form_key)
+            else:
+                form_key = f"{section_dom_id}_response"
+                if form_key in form_data:
+                    _add_value(section.get('column_label') or form_key, form_data.get(form_key))
+                    consumed_form_keys.add(form_key)
 
         elif section_type in ['image', 'video', 'pdf']:
             response_type = section.get('response_type')
@@ -3787,67 +3805,115 @@ def generate_slider_section(config, section_id):
     slider_type = config.get('slider_type', 'labels') 
     required = config.get('required', False)
     required_attr = 'required' if required else ''
-    
-    html = f'''
-        <!-- Slider Section -->
-        <div class="survey-section" id="{section_id}">
-            <div class="survey-section-title">{title}</div>
-            <label for="{section_id}_slider">{question}</label><br>
-            <div class="slider-container">
-'''
-    
-    if slider_type == 'numeric':
-        min_val = config.get('min_value', 0)
-        max_val = config.get('max_value', 100)
-        default_val = config.get('default_value', int((min_val + max_val) / 2))
-        
-        html += f'''                <div class="slider-labels">
+    raw_items = config.get('items', [])
+    items = []
+    for i, item in enumerate(raw_items):
+        if isinstance(item, dict):
+            item_question = item.get('question') or item.get('statement') or item.get('text') or item.get('item') or ''
+            item_id = item.get('id', i)
+            item_label = item.get('column_label') or ''
+        else:
+            item_question = str(item)
+            item_id = i
+            item_label = ''
+        items.append({'id': item_id, 'question': item_question, 'column_label': item_label})
+
+    if not items:
+        items = [{'id': 'default', 'question': question, 'column_label': config.get('column_label', '')}]
+
+    def _render_slider_fields(field_name, slider_id, value_id, item_question, item=None):
+        if slider_type == 'numeric':
+            min_val = config.get('min_value', 0)
+            max_val = config.get('max_value', 100)
+            default_val = config.get('default_value', int((min_val + max_val) / 2))
+            return f'''                <div class="slider-labels">
                     <span class="slider-min">{min_val}</span>
                     <span class="slider-max">{max_val}</span>
                 </div>
-                <input type="range" id="{section_id}_slider" name="{section_id}_response" 
+                <input type="range" id="{slider_id}" name="{field_name}" 
                        min="{min_val}" max="{max_val}" value="{default_val}" 
                        class="survey-slider" {required_attr} data-slider-interacted="false">
                 <div class="slider-value-display">
-                    <span id="{section_id}_value">{default_val}</span>
+                    <span id="{value_id}">{default_val}</span>
                 </div>
                 <script>
-                    document.getElementById('{section_id}_slider').oninput = function() {{
-                        document.getElementById('{section_id}_value').textContent = this.value;
+                    document.getElementById('{slider_id}').oninput = function() {{
+                        document.getElementById('{value_id}').textContent = this.value;
                         this.setAttribute('data-slider-interacted', 'true');
                         updateNextButton();
                     }}
                 </script>
 '''
-    else:
-        left_label = config.get('left_label', 'Strongly Disagree')
-        right_label = config.get('right_label', 'Strongly Agree')
+
+        # Use item-level labels if available, otherwise fall back to section-level labels
+        if item and isinstance(item, dict):
+            left_label = item.get('left_label', config.get('left_label', 'Strongly Disagree'))
+            right_label = item.get('right_label', config.get('right_label', 'Strongly Agree'))
+        else:
+            left_label = config.get('left_label', 'Strongly Disagree')
+            right_label = config.get('right_label', 'Strongly Agree')
+        
         steps = config.get('steps', 7)
         default_val = config.get('default_value', int(steps / 2))
-        
-        html += f'''                <div class="slider-labels">
+        return f'''                <div class="slider-labels">
                     <span class="slider-min">{left_label}</span>
                     <span class="slider-max">{right_label}</span>
                 </div>
-                <input type="range" id="{section_id}_slider" name="{section_id}_response" 
+                <input type="range" id="{slider_id}" name="{field_name}" 
                        min="1" max="{steps}" value="{default_val}" 
                        class="survey-slider" {required_attr} data-slider-interacted="false">
                 <div class="slider-value-display">
-                    <span id="{section_id}_value">{default_val}</span>
+                    <span id="{value_id}">{default_val}</span>
                 </div>
                 <script>
-                    document.getElementById('{section_id}_slider').oninput = function() {{
-                        document.getElementById('{section_id}_value').textContent = this.value;
+                    document.getElementById('{slider_id}').oninput = function() {{
+                        document.getElementById('{value_id}').textContent = this.value;
                         this.setAttribute('data-slider-interacted', 'true');
                         updateNextButton();
                     }}
                 </script>
 '''
-    
-    html += '''            </div>
+
+    if len(items) > 1:
+        rendered_items = ''
+        if question:
+            rendered_items += f'                <div class="slider-section-instructions">{question}</div>\n'
+
+        for item in items:
+            item_id = item.get('id')
+            item_question = item.get('question', '')
+            item_field_name = f"{section_id}_response_{item_id}"
+            item_slider_id = f"{section_id}_slider_{item_id}"
+            item_value_id = f"{section_id}_value_{item_id}"
+            rendered_items += f'''                <div class="slider-item">
+                    <label for="{item_slider_id}">{item_question}</label><br>
+{_render_slider_fields(item_field_name, item_slider_id, item_value_id, item_question, item)}                </div>
+'''
+
+        return f'''
+        <!-- Slider Section -->
+        <div class="survey-section" id="{section_id}">
+            <div class="survey-section-title">{title}</div>
+            <div class="slider-items">
+{rendered_items}            </div>
         </div>
 '''
-    return html
+
+    item = items[0]
+    item_question = item.get('question', question)
+    item_field_name = f"{section_id}_response"
+    item_slider_id = f"{section_id}_slider"
+    item_value_id = f"{section_id}_value"
+
+    return f'''
+        <!-- Slider Section -->
+        <div class="survey-section" id="{section_id}">
+            <div class="survey-section-title">{title}</div>
+            <label for="{item_slider_id}">{item_question}</label><br>
+            <div class="slider-container">
+{_render_slider_fields(item_field_name, item_slider_id, item_value_id, item_question, item)}            </div>
+        </div>
+'''
 
 def generate_image_section(config, section_id):
     """Generate image display section HTML"""

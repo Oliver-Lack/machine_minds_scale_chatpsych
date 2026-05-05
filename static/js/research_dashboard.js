@@ -1446,7 +1446,7 @@ function showCreationFeedback(message, type = 'info') {
 // Survey Configuration Functions
 function toggleSectionExpanded(sectionName) {
     const section = document.querySelector(`[data-section="${sectionName}"] .section-content`);
-    const button = document.querySelector(`[data-section="${sectionName}"] .btn-small`);
+    const button = document.querySelector(`[data-section="${sectionName}"] .btn-toggle`) || document.querySelector(`[data-section="${sectionName}"] .btn-small`);
     
     if (section.classList.contains('expanded')) {
         section.classList.remove('expanded');
@@ -1454,6 +1454,66 @@ function toggleSectionExpanded(sectionName) {
     } else {
         section.classList.add('expanded');
         button.textContent = '▼';
+    }
+}
+
+function renderSectionControlButtons(sectionId) {
+    return `
+                <button type="button" class="btn-small btn-toggle" onclick="toggleSectionExpanded('${sectionId}')">▼</button>
+                <button type="button" class="btn-small btn-move" onclick="moveSurveySection(this, -1)" title="Move section up">↑</button>
+                <button type="button" class="btn-small btn-move" onclick="moveSurveySection(this, 1)" title="Move section down">↓</button>
+                <button type="button" class="btn-small btn-duplicate" onclick="duplicateSurveySection(this)" title="Duplicate section">⧉</button>
+                <button type="button" class="btn-remove" onclick="removeSurveySection('${sectionId}')">×</button>
+    `;
+}
+
+function getSurveySectionElement(sectionOrButton) {
+    if (typeof sectionOrButton === 'string') {
+        return document.querySelector(`[data-section="${sectionOrButton}"]`);
+    }
+
+    if (sectionOrButton && typeof sectionOrButton.closest === 'function') {
+        return sectionOrButton.closest('.survey-section-config');
+    }
+
+    return null;
+}
+
+function updateSectionElementReferences(element, oldSectionId, newSectionId) {
+    [element, ...element.querySelectorAll('*')].forEach(node => {
+        Array.from(node.attributes).forEach(attribute => {
+            if (attribute.value.includes(oldSectionId)) {
+                node.setAttribute(attribute.name, attribute.value.split(oldSectionId).join(newSectionId));
+            }
+        });
+    });
+}
+
+function duplicateSurveySection(button) {
+    const sourceSection = getSurveySectionElement(button);
+    if (!sourceSection || !sourceSection.parentElement) return;
+
+    const oldSectionId = sourceSection.getAttribute('data-section');
+    const sectionType = oldSectionId ? oldSectionId.split('-')[0] : 'section';
+    const newSectionId = `${sectionType}-${generateInternalId('copy')}`;
+    const duplicateSection = sourceSection.cloneNode(true);
+
+    duplicateSection.setAttribute('data-section', newSectionId);
+    updateSectionElementReferences(duplicateSection, oldSectionId, newSectionId);
+    sourceSection.parentElement.insertBefore(duplicateSection, sourceSection.nextSibling);
+}
+
+function moveSurveySection(button, direction) {
+    const section = getSurveySectionElement(button);
+    if (!section || !section.parentElement) return;
+
+    const sibling = direction < 0 ? section.previousElementSibling : section.nextElementSibling;
+    if (!sibling || !sibling.classList.contains('survey-section-config')) return;
+
+    if (direction < 0) {
+        section.parentElement.insertBefore(section, sibling);
+    } else {
+        section.parentElement.insertBefore(sibling, section);
     }
 }
 
@@ -1522,7 +1582,10 @@ function addCustomSection() {
             <div class="section-controls">
                 <input type="checkbox" id="enable-${sectionId}" checked>
                 <label for="enable-${sectionId}">Enable</label>
-                <button type="button" class="btn-small" onclick="toggleSectionExpanded('${sectionId}')">▼</button>
+                <button type="button" class="btn-small btn-toggle" onclick="toggleSectionExpanded('${sectionId}')">▼</button>
+                <button type="button" class="btn-small btn-move" onclick="moveSurveySection(this, -1)" title="Move section up">↑</button>
+                <button type="button" class="btn-small btn-move" onclick="moveSurveySection(this, 1)" title="Move section down">↓</button>
+                <button type="button" class="btn-small btn-duplicate" onclick="duplicateSurveySection(this)" title="Duplicate section">⧉</button>
                 <button type="button" class="btn-remove" onclick="removeCustomSection('${sectionId}')">×</button>
             </div>
         </div>
@@ -1627,8 +1690,7 @@ function createDemographicsSection(sectionId) {
             <div class="section-controls">
                 <input type="checkbox" id="enable-${sectionId}" checked>
                 <label for="enable-${sectionId}">Enable</label>
-                <button type="button" class="btn-small" onclick="toggleSectionExpanded('${sectionId}')">▼</button>
-                <button type="button" class="btn-remove" onclick="removeSurveySection('${sectionId}')">×</button>
+${renderSectionControlButtons(sectionId)}
             </div>
         </div>
         <div class="section-content expanded">
@@ -1669,8 +1731,7 @@ function createLikertSection(sectionId) {
             <div class="section-controls">
                 <input type="checkbox" id="enable-${sectionId}" checked>
                 <label for="enable-${sectionId}">Enable</label>
-                <button type="button" class="btn-small" onclick="toggleSectionExpanded('${sectionId}')">▼</button>
-                <button type="button" class="btn-remove" onclick="removeSurveySection('${sectionId}')">×</button>
+${renderSectionControlButtons(sectionId)}
             </div>
         </div>
         <div class="section-content expanded">
@@ -1724,8 +1785,7 @@ function createFreetextSection(sectionId) {
             <div class="section-controls">
                 <input type="checkbox" id="enable-${sectionId}" checked>
                 <label for="enable-${sectionId}">Enable</label>
-                <button type="button" class="btn-small" onclick="toggleSectionExpanded('${sectionId}')">▼</button>
-                <button type="button" class="btn-remove" onclick="removeSurveySection('${sectionId}')">×</button>
+${renderSectionControlButtons(sectionId)}
             </div>
         </div>
         <div class="section-content expanded">
@@ -1755,8 +1815,7 @@ function createCustomSection(sectionId) {
             <div class="section-controls">
                 <input type="checkbox" id="enable-${sectionId}" checked>
                 <label for="enable-${sectionId}">Enable</label>
-                <button type="button" class="btn-small" onclick="toggleSectionExpanded('${sectionId}')">▼</button>
-                <button type="button" class="btn-remove" onclick="removeSurveySection('${sectionId}')">×</button>
+${renderSectionControlButtons(sectionId)}
             </div>
         </div>
         <div class="section-content expanded">
@@ -1782,8 +1841,7 @@ function createCheckboxSection(sectionId) {
             <div class="section-controls">
                 <input type="checkbox" id="enable-${sectionId}" checked>
                 <label for="enable-${sectionId}">Enable</label>
-                <button type="button" class="btn-small" onclick="toggleSectionExpanded('${sectionId}')">▼</button>
-                <button type="button" class="btn-remove" onclick="removeSurveySection('${sectionId}')">×</button>
+${renderSectionControlButtons(sectionId)}
             </div>
         </div>
         <div class="section-content expanded">
@@ -1821,8 +1879,7 @@ function createDropdownSection(sectionId) {
             <div class="section-controls">
                 <input type="checkbox" id="enable-${sectionId}" checked>
                 <label for="enable-${sectionId}">Enable</label>
-                <button type="button" class="btn-small" onclick="toggleSectionExpanded('${sectionId}')">▼</button>
-                <button type="button" class="btn-remove" onclick="removeSurveySection('${sectionId}')">×</button>
+${renderSectionControlButtons(sectionId)}
             </div>
         </div>
         <div class="section-content expanded">
@@ -1857,14 +1914,14 @@ function createDropdownSection(sectionId) {
 }
 
 function createSliderSection(sectionId) {
+    const itemId1 = generateInternalId('slider');
     return `
         <div class="section-header">
             <h4>Slider Scale</h4>
             <div class="section-controls">
                 <input type="checkbox" id="enable-${sectionId}" checked>
                 <label for="enable-${sectionId}">Enable</label>
-                <button type="button" class="btn-small" onclick="toggleSectionExpanded('${sectionId}')">▼</button>
-                <button type="button" class="btn-remove" onclick="removeSurveySection('${sectionId}')">×</button>
+${renderSectionControlButtons(sectionId)}
             </div>
         </div>
         <div class="section-content expanded">
@@ -1913,6 +1970,20 @@ function createSliderSection(sectionId) {
                     <input type="number" value="50">
                 </div>
             </div>
+
+            <div class="slider-items-container">
+                <h5>Slider Items:</h5>
+                <div class="slider-items" id="slider-items-${sectionId}">
+                    <div class="slider-item" data-item-id="${itemId1}">
+                        <label>Question:</label>
+                        <input type="text" class="slider-question-input" value="Please rate using the slider:" placeholder="Enter question">
+                        <label>Column label (hidden from participant):</label>
+                        <input type="text" class="column-label-input" placeholder="e.g., slider_${sectionId}_response" style="width: 260px;">
+                        <button type="button" class="btn-remove" onclick="removeLikertItem(this)">×</button>
+                    </div>
+                </div>
+                <button type="button" class="btn-add" onclick="addSliderItemToSection('${sectionId}')">+ Add Item</button>
+            </div>
         </div>
     `;
 }
@@ -1928,8 +1999,7 @@ function createImageSection(sectionId) {
             <div class="section-controls">
                 <input type="checkbox" id="enable-${sectionId}" checked>
                 <label for="enable-${sectionId}">Enable</label>
-                <button type="button" class="btn-small" onclick="toggleSectionExpanded('${sectionId}')">▼</button>
-                <button type="button" class="btn-remove" onclick="removeSurveySection('${sectionId}')">×</button>
+${renderSectionControlButtons(sectionId)}
             </div>
         </div>
         <div class="section-content expanded">
@@ -2004,8 +2074,7 @@ function createVideoSection(sectionId) {
             <div class="section-controls">
                 <input type="checkbox" id="enable-${sectionId}" checked>
                 <label for="enable-${sectionId}">Enable</label>
-                <button type="button" class="btn-small" onclick="toggleSectionExpanded('${sectionId}')">▼</button>
-                <button type="button" class="btn-remove" onclick="removeSurveySection('${sectionId}')">×</button>
+${renderSectionControlButtons(sectionId)}
             </div>
         </div>
         <div class="section-content expanded">
@@ -2093,8 +2162,7 @@ function createPDFSection(sectionId) {
             <div class="section-controls">
                 <input type="checkbox" id="enable-${sectionId}" checked>
                 <label for="enable-${sectionId}">Enable</label>
-                <button type="button" class="btn-small" onclick="toggleSectionExpanded('${sectionId}')">▼</button>
-                <button type="button" class="btn-remove" onclick="removeSurveySection('${sectionId}')">×</button>
+${renderSectionControlButtons(sectionId)}
             </div>
         </div>
         <div class="section-content expanded">
@@ -2197,6 +2265,22 @@ function addLikertItemToSection(sectionId) {
     newItem.innerHTML = `
         <input type="text" class="likert-statement-input" placeholder="Enter statement">
         <input type="text" class="column-label-input" placeholder="Column label (hidden from participant)" style="width: 260px;">
+        <button type="button" class="btn-remove" onclick="removeLikertItem(this)">×</button>
+    `;
+    container.appendChild(newItem);
+}
+
+function addSliderItemToSection(sectionId) {
+    const container = document.getElementById(`slider-items-${sectionId}`);
+    const itemId = generateInternalId('slider');
+    const newItem = document.createElement('div');
+    newItem.className = 'slider-item';
+    newItem.setAttribute('data-item-id', itemId);
+    newItem.innerHTML = `
+        <label>Question:</label>
+        <input type="text" class="slider-question-input" placeholder="Enter question">
+        <label>Column label (hidden from participant):</label>
+        <input type="text" class="column-label-input" placeholder="e.g., slider_score" style="width: 260px;">
         <button type="button" class="btn-remove" onclick="removeLikertItem(this)">×</button>
     `;
     container.appendChild(newItem);
@@ -2461,7 +2545,8 @@ function collectSurveyConfiguration() {
             randomizeItems: document.getElementById('randomize-items').checked,
             completionMessage: document.getElementById('completion-message').value
         },
-        sections: {}
+        sections: {},
+        sectionOrder: []
     };
     
     // Collect configuration from all dynamic sections
@@ -2475,6 +2560,9 @@ function collectSurveyConfiguration() {
         if (!enableCheckbox || !enableCheckbox.checked) {
             return;
         }
+        
+        // Track section order
+        config.sectionOrder.push(sectionId);
         
         const sectionType = sectionId.split('-')[0];
         const titleInput = sectionElement.querySelector('.section-content > input[type="text"]') || sectionElement.querySelector('input[type="text"]');
@@ -2637,6 +2725,20 @@ function collectSurveyConfiguration() {
             const requiredCheckbox = sectionElement.querySelector('.section-content > input[type="checkbox"]');
             const sliderTypeRadio = sectionElement.querySelector(`input[name="slider-type-${sectionId}"]:checked`);
             const sliderType = sliderTypeRadio ? sliderTypeRadio.value : 'labels';
+            const sliderItems = [];
+
+            sectionElement.querySelectorAll('.slider-items .slider-item').forEach(itemDiv => {
+                const itemQuestionInput = itemDiv.querySelector('.slider-question-input') || itemDiv.querySelector('input[type="text"]');
+                const itemColumnLabelInput = itemDiv.querySelector('.column-label-input');
+                const questionText = itemQuestionInput ? itemQuestionInput.value.trim() : '';
+                if (!questionText) return;
+
+                sliderItems.push({
+                    id: itemDiv.getAttribute('data-item-id') || generateInternalId('slider'),
+                    question: questionText,
+                    column_label: itemColumnLabelInput ? itemColumnLabelInput.value.trim() : ''
+                });
+            });
             
             let sliderConfig = {
                 type: 'slider',
@@ -2645,7 +2747,8 @@ function collectSurveyConfiguration() {
                 question: questionInput ? questionInput.value : 'Please rate using the slider:',
                 required: requiredCheckbox ? requiredCheckbox.checked : false,
                 slider_type: sliderType,
-                column_label: columnLabelInput ? columnLabelInput.value.trim() : ''
+                column_label: columnLabelInput ? columnLabelInput.value.trim() : '',
+                items: sliderItems
             };
             
             if (sliderType === 'labels') {
@@ -2927,9 +3030,11 @@ function populateSurveyForm(config) {
     
     // Populate dynamic sections
     if (config.sections) {
-        Object.keys(config.sections).forEach(sectionId => {
+        // Use sectionOrder if available, otherwise fall back to Object.keys()
+        const sectionOrder = config.sectionOrder || Object.keys(config.sections);
+        sectionOrder.forEach(sectionId => {
             const sectionConfig = config.sections[sectionId];
-            if (!sectionConfig.enabled) return;
+            if (!sectionConfig || !sectionConfig.enabled) return;
             
             // Create the section based on its type
             let sectionHTML = '';
@@ -3187,6 +3292,29 @@ function populateSectionData(sectionId, sectionConfig) {
         const requiredCheckbox = sectionElement.querySelector('.section-content > input[type="checkbox"]');
         if (requiredCheckbox) {
             requiredCheckbox.checked = sectionConfig.required || false;
+        }
+
+        const sliderItemsContainer = sectionElement.querySelector('.slider-items');
+        if (sliderItemsContainer && sectionConfig.items) {
+            sliderItemsContainer.innerHTML = '';
+            sectionConfig.items.forEach(item => {
+                const itemObj = (typeof item === 'string') ? { question: item } : (item || {});
+                const question = (itemObj.question || itemObj.statement || itemObj.text || itemObj.item || '').toString();
+                const columnLabel = (itemObj.column_label || '').toString();
+                const itemId = (itemObj.id || generateInternalId('slider')).toString();
+
+                const newItem = document.createElement('div');
+                newItem.className = 'slider-item';
+                newItem.setAttribute('data-item-id', itemId);
+                newItem.innerHTML = `
+                    <label>Question:</label>
+                    <input type="text" class="slider-question-input" value="${question}" placeholder="Enter question">
+                    <label>Column label (hidden from participant):</label>
+                    <input type="text" class="column-label-input" value="${columnLabel}" placeholder="e.g., slider_score" style="width: 260px;">
+                    <button type="button" class="btn-remove" onclick="removeLikertItem(this)">×</button>
+                `;
+                sliderItemsContainer.appendChild(newItem);
+            });
         }
         
         // Set slider type
@@ -4092,7 +4220,8 @@ function collectPostSurveyConfiguration() {
             completion_popup_message: completionMessageElement ? completionMessageElement.value : 'The study is now complete. Thank you for your participation. If required, your completion code is: xxxx',
             finish_button_text: finishButtonElement ? finishButtonElement.value : 'Finish'
         },
-        sections: {}
+        sections: {},
+        sectionOrder: []
     };
     
     console.log('Collected basic config:', config);
@@ -4110,6 +4239,9 @@ function collectPostSurveyConfiguration() {
             console.log(`Skipping section ${sectionId} - not enabled`);
             return;
         }
+        
+        // Track section order
+        config.sectionOrder.push(sectionId);
         
         const sectionType = sectionId.split('-')[0];
         const titleInput = sectionElement.querySelector('.section-content > input[type="text"]') || sectionElement.querySelector('input[type="text"]');
@@ -4274,6 +4406,20 @@ function collectPostSurveyConfiguration() {
             const requiredCheckbox = sectionElement.querySelector('.section-content > input[type="checkbox"]');
             const sliderTypeRadio = sectionElement.querySelector(`input[name="slider-type-${sectionId}"]:checked`);
             const sliderType = sliderTypeRadio ? sliderTypeRadio.value : 'labels';
+            const sliderItems = [];
+
+            sectionElement.querySelectorAll('.slider-items .slider-item').forEach(itemDiv => {
+                const itemQuestionInput = itemDiv.querySelector('.slider-question-input') || itemDiv.querySelector('input[type="text"]');
+                const itemColumnLabelInput = itemDiv.querySelector('.column-label-input');
+                const questionText = itemQuestionInput ? itemQuestionInput.value.trim() : '';
+                if (!questionText) return;
+
+                sliderItems.push({
+                    id: itemDiv.getAttribute('data-item-id') || generateInternalId('slider'),
+                    question: questionText,
+                    column_label: itemColumnLabelInput ? itemColumnLabelInput.value.trim() : ''
+                });
+            });
             
             let sliderConfig = {
                 type: 'slider',
@@ -4282,7 +4428,8 @@ function collectPostSurveyConfiguration() {
                 question: questionInput ? questionInput.value : 'Please rate using the slider:',
                 required: requiredCheckbox ? requiredCheckbox.checked : false,
                 slider_type: sliderType,
-                column_label: columnLabelInput ? columnLabelInput.value.trim() : ''
+                column_label: columnLabelInput ? columnLabelInput.value.trim() : '',
+                items: sliderItems
             };
             
             if (sliderType === 'labels') {
@@ -4597,9 +4744,11 @@ function populatePostSurveyForm(config) {
     
     // Populate dynamic sections if they exist
     if (config.sections) {
-        Object.keys(config.sections).forEach(sectionId => {
+        // Use sectionOrder if available, otherwise fall back to Object.keys()
+        const sectionOrder = config.sectionOrder || Object.keys(config.sections);
+        sectionOrder.forEach(sectionId => {
             const sectionConfig = config.sections[sectionId];
-            if (!sectionConfig.enabled) return;
+            if (!sectionConfig || !sectionConfig.enabled) return;
             
             // Create the section based on its type
             let sectionHTML = '';
@@ -4801,7 +4950,8 @@ function collectPostSurvey2Configuration() {
             completion_popup_message: completionMessageElement ? completionMessageElement.value : 'The study is now complete. Thank you for your participation. If required, your completion code is: xxxx',
             finish_button_text: finishButtonElement ? finishButtonElement.value : 'Finish'
         },
-        sections: {}
+        sections: {},
+        sectionOrder: []
     };
 
     const dynamicSections = document.querySelectorAll('#post2-dynamic-sections-container .survey-section-config');
@@ -4811,6 +4961,9 @@ function collectPostSurvey2Configuration() {
         if (!enableCheckbox || !enableCheckbox.checked) {
             return;
         }
+        
+        // Track section order
+        config.sectionOrder.push(sectionId);
 
         const sectionType = sectionId.split('-')[0];
         const titleInput = sectionElement.querySelector('.section-content > input[type="text"]') || sectionElement.querySelector('input[type="text"]');
@@ -5081,9 +5234,11 @@ function populatePostSurvey2Form(config) {
     dynamicContainer.innerHTML = '';
 
     if (config.sections) {
-        Object.keys(config.sections).forEach(sectionId => {
+        // Use sectionOrder if available, otherwise fall back to Object.keys()
+        const sectionOrder = config.sectionOrder || Object.keys(config.sections);
+        sectionOrder.forEach(sectionId => {
             const sectionConfig = config.sections[sectionId];
-            if (!sectionConfig.enabled) return;
+            if (!sectionConfig || !sectionConfig.enabled) return;
 
             let sectionHTML = '';
             switch (sectionConfig.type) {

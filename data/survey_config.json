@@ -1,73 +1,433 @@
 {
-    "title": "Pre-interaction Survey",
-    "information": {
-        "title": "Interactions with Artificial Intelligence",
-        "content": "Dear Participant,\nYou are invited to participate in the research project described below.\nWhat is the project about?\nThis research project seeks to explore how various characteristics of technology impact the way users perceive and interact with these systems. Participants will take part in interactive sessions set in a game-like environment, where adjustments will be made to specific features of the systems being used. By observing these interactions, we aim to gain insights into how these technological attributes influence user perceptions and behaviours. The insights gained from this study could play a significant role in guiding the development and improvement of future technologies, enhancing how they are designed and experienced by users across different contexts.\n"
-    },
     "consent": {
         "content": "Human Research Ethics Committee (HREC) \u2013 Consent Form\n1.\tI have read the Information Sheet and agree to take part in the research project.\n2.\tI have had the project, so far as it affects me, and the potential risks and burdens fully explained to my satisfaction by the research worker. I have had the opportunity to ask any questions I may have about the project and my participation. My consent is given freely.\n3.\tI understand the purpose of the research project and it has been explained that my involvement may not be of any immediate benefit to me.\n4.\tI agree to participate in the activities outlined in the participant information sheet.\n5.\tI understand my participation is voluntary and that I am free to withdraw my information from the project before the analysis.  \n6.\tI have been informed that the data collected from this project may be published in a journal article, academic theses, conference paper, pre-print archive, Open Science repository, and other forms of publication.  \n7.\tI have been informed that in the published materials I will not be identified and any personal information that could identify me will not be divulged. \n8.\tI consent for the use of my data by the same or other researchers for any future research purposes. I understand any resulting identifiable personal information will be removed or changed before it is either shared with other researchers or made accessible on a public data repository.\n9.\tI understand my information will only be disclosed according to the consent provided, except where disclosure is required by law. \n10.\tI am aware that I should keep a copy of this Consent Form, when completed, and the attached Information Sheet."
     },
-    "settings": {
-        "showProgress": true,
-        "randomizeSections": false,
-        "randomizeItems": false,
-        "completionMessage": "Survey completed! Redirecting to AI..."
+    "information": {
+        "content": "Dear Participant,\nYou are invited to participate in the research project described below.\nWhat is the project about?\nThis research project seeks to explore how various characteristics of technology impact the way users perceive and interact with these systems. Participants will take part in interactive sessions set in a game-like environment, where adjustments will be made to specific features of the systems being used. By observing these interactions, we aim to gain insights into how these technological attributes influence user perceptions and behaviours. The insights gained from this study could play a significant role in guiding the development and improvement of future technologies, enhancing how they are designed and experienced by users across different contexts.\n",
+        "title": "Interactions with Artificial Intelligence"
+    },
+    "post_survey": {
+        "enabled": true,
+        "title": "Post-Interaction Survey",
+        "settings": {
+            "showProgress": true,
+            "randomizeSections": false,
+            "randomizeItems": false
+        },
+        "completion_settings": {
+            "completion_popup_message": "You will now guess the AI's secret word",
+            "finish_button_text": "Next"
+        },
+        "sections": {
+            "image-1777967201636": {
+                "type": "image",
+                "enabled": true,
+                "title": "Image Display",
+                "description": "",
+                "alt_text": "",
+                "display_size": "medium",
+                "alignment": "center",
+                "require_response": false,
+                "file_path": "/static/uploads/survey_image_image-1777967201636_20260505_171646.png"
+            },
+            "slider-1777967216741": {
+                "type": "slider",
+                "enabled": true,
+                "title": "Answer the following:",
+                "question": "According to you, a human being can...",
+                "required": true,
+                "slider_type": "labels",
+                "column_label": "AMSQ_human",
+                "items": [
+                    {
+                        "id": "slider_1777967216741_71fa28ce7aa938",
+                        "question": "Learn",
+                        "column_label": "AMSQ_1"
+                    },
+                    {
+                        "id": "slider_1777967339456_a8f12b111d98b8",
+                        "question": "Think",
+                        "column_label": "AMSQ_2"
+                    },
+                    {
+                        "id": "slider_1777967340499_bee9600fdb514",
+                        "question": "Remember",
+                        "column_label": "AMSQ_3"
+                    },
+                    {
+                        "id": "slider_1777967341219_4ac7c46984ed18",
+                        "question": "Make a decision",
+                        "column_label": "AMSQ_4"
+                    },
+                    {
+                        "id": "slider_1777967341743_fcbd11e13ce6f8",
+                        "question": "Understand",
+                        "column_label": "AMSQ_5"
+                    },
+                    {
+                        "id": "slider_1777967342186_471998e9c7d138",
+                        "question": "Tell a lie",
+                        "column_label": "AMSQ_6"
+                    },
+                    {
+                        "id": "slider_1777967342651_a469013418c578",
+                        "question": "Dream",
+                        "column_label": "AMSQ_7"
+                    },
+                    {
+                        "id": "slider_1777967343123_19a27b76e53cd",
+                        "question": "Imagine",
+                        "column_label": "AMSQ_8"
+                    },
+                    {
+                        "id": "slider_1777967343528_43e68fdc9d539",
+                        "question": "Make a joke",
+                        "column_label": "AMSQ_9"
+                    },
+                    {
+                        "id": "slider_1777967343979_ddb5d26953ba7",
+                        "question": "Pretend",
+                        "column_label": "AMSQ_10"
+                    },
+                    {
+                        "id": "slider_1777967344398_cf75f99b8af378",
+                        "question": "See",
+                        "column_label": "AMSQ_11"
+                    },
+                    {
+                        "id": "slider_1777967345463_f6766ab86b554",
+                        "question": "Feel hot or cold",
+                        "column_label": "AMSQ_12"
+                    },
+                    {
+                        "id": "slider_1777967450809_8ab63d4a6c212",
+                        "question": "Taste",
+                        "column_label": "AMSQ_13"
+                    },
+                    {
+                        "id": "slider_1777967451424_9d10aa163622f8",
+                        "question": "Hear",
+                        "column_label": "AMSQ_14"
+                    },
+                    {
+                        "id": "slider_1777967451986_4bea2a70e08ff",
+                        "question": "Smell",
+                        "column_label": "AMSQ_15"
+                    },
+                    {
+                        "id": "slider_1777967452714_087c492c65be68",
+                        "question": "Have fun",
+                        "column_label": "AMSQ_16"
+                    },
+                    {
+                        "id": "slider_1777967514387_d87b0ba8114a9",
+                        "question": "Love",
+                        "column_label": "AMSQ_17"
+                    },
+                    {
+                        "id": "slider_1777967515204_58ac7cce939af",
+                        "question": "Be happy",
+                        "column_label": "AMSQ_18"
+                    },
+                    {
+                        "id": "slider_1777967515699_cf82395e9e70b8",
+                        "question": "Be sad",
+                        "column_label": "AMSQ_19"
+                    },
+                    {
+                        "id": "slider_1777967516232_a791ae5e885578",
+                        "question": "Be scared",
+                        "column_label": "AMSQ_20"
+                    },
+                    {
+                        "id": "slider_1777967552269_e92853db4df23",
+                        "question": "Get angry",
+                        "column_label": "AMSQ_21"
+                    },
+                    {
+                        "id": "slider_1777967553717_c3c4e2f3c4b8d",
+                        "question": "Have the intention to do something",
+                        "column_label": "AMSQ_22"
+                    },
+                    {
+                        "id": "slider_1777967579209_82ee82ae5be9d",
+                        "question": "Want to do something",
+                        "column_label": "AMSQ_23"
+                    },
+                    {
+                        "id": "slider_1777967579667_0f10056009779",
+                        "question": "Make a wish",
+                        "column_label": "AMSQ_24"
+                    }
+                ],
+                "left_label": "No, not at all",
+                "right_label": "Yes, very much",
+                "steps": 7,
+                "default_value": 4
+            },
+            "image-1777969160688": {
+                "type": "image",
+                "enabled": true,
+                "title": "",
+                "description": "",
+                "alt_text": "",
+                "display_size": "medium",
+                "alignment": "center",
+                "require_response": false,
+                "file_path": "/static/uploads/survey_image_image-1777969160688_20260505_174950.png"
+            },
+            "slider-copy_1777968956311_643471d52e4b7": {
+                "type": "slider",
+                "enabled": true,
+                "title": "Answer the following:",
+                "question": "According to you, the AI can...",
+                "required": true,
+                "slider_type": "labels",
+                "column_label": "AMSQ_AI",
+                "items": [
+                    {
+                        "id": "slider_1777967216741_71fa28ce7aa938",
+                        "question": "Learn",
+                        "column_label": "AMSQ_H_1"
+                    },
+                    {
+                        "id": "slider_1777967339456_a8f12b111d98b8",
+                        "question": "Think",
+                        "column_label": "AMSQ_H_2"
+                    },
+                    {
+                        "id": "slider_1777967340499_bee9600fdb514",
+                        "question": "Remember",
+                        "column_label": "AMSQ_H_3"
+                    },
+                    {
+                        "id": "slider_1777967341219_4ac7c46984ed18",
+                        "question": "Make a decision",
+                        "column_label": "AMSQ_H_4"
+                    },
+                    {
+                        "id": "slider_1777967341743_fcbd11e13ce6f8",
+                        "question": "Understand",
+                        "column_label": "AMSQ_H_5"
+                    },
+                    {
+                        "id": "slider_1777967342186_471998e9c7d138",
+                        "question": "Tell a lie",
+                        "column_label": "AMSQ_H_6"
+                    },
+                    {
+                        "id": "slider_1777967342651_a469013418c578",
+                        "question": "Dream",
+                        "column_label": "AMSQ_H_7"
+                    },
+                    {
+                        "id": "slider_1777967343123_19a27b76e53cd",
+                        "question": "Imagine",
+                        "column_label": "AMSQ_H_8"
+                    },
+                    {
+                        "id": "slider_1777967343528_43e68fdc9d539",
+                        "question": "Make a joke",
+                        "column_label": "AMSQ_H_9"
+                    },
+                    {
+                        "id": "slider_1777967343979_ddb5d26953ba7",
+                        "question": "Pretend",
+                        "column_label": "AMSQ_H_10"
+                    },
+                    {
+                        "id": "slider_1777967344398_cf75f99b8af378",
+                        "question": "See",
+                        "column_label": "AMSQ_H_11"
+                    },
+                    {
+                        "id": "slider_1777967345463_f6766ab86b554",
+                        "question": "Feel hot or cold",
+                        "column_label": "AMSQ_H_12"
+                    },
+                    {
+                        "id": "slider_1777967450809_8ab63d4a6c212",
+                        "question": "Taste",
+                        "column_label": "AMSQ_H_13"
+                    },
+                    {
+                        "id": "slider_1777967451424_9d10aa163622f8",
+                        "question": "Hear",
+                        "column_label": "AMSQ_H_14"
+                    },
+                    {
+                        "id": "slider_1777967451986_4bea2a70e08ff",
+                        "question": "Smell",
+                        "column_label": "AMSQ_H_15"
+                    },
+                    {
+                        "id": "slider_1777967452714_087c492c65be68",
+                        "question": "Have fun",
+                        "column_label": "AMSQ_H_16"
+                    },
+                    {
+                        "id": "slider_1777967514387_d87b0ba8114a9",
+                        "question": "Love",
+                        "column_label": "AMSQ_H_17"
+                    },
+                    {
+                        "id": "slider_1777967515204_58ac7cce939af",
+                        "question": "Be happy",
+                        "column_label": "AMSQ_H_18"
+                    },
+                    {
+                        "id": "slider_1777967515699_cf82395e9e70b8",
+                        "question": "Be sad",
+                        "column_label": "AMSQ_H_19"
+                    },
+                    {
+                        "id": "slider_1777967516232_a791ae5e885578",
+                        "question": "Be scared",
+                        "column_label": "AMSQ_H_20"
+                    },
+                    {
+                        "id": "slider_1777967552269_e92853db4df23",
+                        "question": "Get angry",
+                        "column_label": "AMSQ_H_21"
+                    },
+                    {
+                        "id": "slider_1777967553717_c3c4e2f3c4b8d",
+                        "question": "Have the intention to do something",
+                        "column_label": "AMSQ_H_22"
+                    },
+                    {
+                        "id": "slider_1777967579209_82ee82ae5be9d",
+                        "question": "Want to do something",
+                        "column_label": "AMSQ_H_23"
+                    },
+                    {
+                        "id": "slider_1777967579667_0f10056009779",
+                        "question": "Make a wish",
+                        "column_label": "AMSQ_H_24"
+                    }
+                ],
+                "left_label": "No, not at all",
+                "right_label": "Yes, very much",
+                "steps": 7,
+                "default_value": 4
+            },
+            "slider-1777969305197": {
+                "type": "slider",
+                "enabled": true,
+                "title": "Answer the following:",
+                "question": "Which description of the AI's behaviour is better?",
+                "required": true,
+                "slider_type": "labels",
+                "column_label": "intentional_stance_1",
+                "items": [
+                    {
+                        "id": "slider_1777969305197_630bf7acb625",
+                        "question": "Which description is better?",
+                        "column_label": "intentional_stance_1_1"
+                    }
+                ],
+                "left_label": "The AI is eager to solve a puzzle, thinking through each question to learn more, adjusting its understanding based on your answers, and aims to figure out the object you're thinking of. ",
+                "right_label": "The AI uses a neural network to process input through mathematical algorithms and logical operations, updating probability estimates to eliminate options based on statistical patterns, all executed through millions of operations in its hardware directed by optimization software. ",
+                "steps": 7,
+                "default_value": 4
+            },
+            "slider-copy_1777969773657_ea4841a00dd7a": {
+                "type": "slider",
+                "enabled": true,
+                "title": "Answer the following:",
+                "question": "Which description of the AI's behaviour is better?",
+                "required": true,
+                "slider_type": "labels",
+                "column_label": "intentional_stance_2",
+                "items": [
+                    {
+                        "id": "slider_1777969305197_630bf7acb625",
+                        "question": "Which description is better?",
+                        "column_label": "intentional_stance_2_1"
+                    }
+                ],
+                "left_label": "The AI wanted to play the game ",
+                "right_label": "The AI computed the input token sequence  ",
+                "steps": 7,
+                "default_value": 4
+            },
+            "checkbox-1777970061373": {
+                "type": "checkbox",
+                "enabled": true,
+                "title": "Multiple choice question:",
+                "question": "Which of these is an animal?",
+                "options": [
+                    "Umbrella",
+                    "Lion",
+                    "Boat"
+                ],
+                "column_label": "attention_check_1"
+            },
+            "slider-1777970237901": {
+                "type": "slider",
+                "enabled": true,
+                "title": "Rating Scale",
+                "question": "Please rate using the slider:",
+                "required": true,
+                "slider_type": "labels",
+                "column_label": "",
+                "items": [
+                    {
+                        "id": "slider_1777970237901_1a5bb61e02c6b",
+                        "question": "Please rate using the slider:",
+                        "column_label": ""
+                    }
+                ],
+                "left_label": "Strongly Disagree",
+                "right_label": "Strongly Agree",
+                "steps": 7,
+                "default_value": 4
+            }
+        }
     },
     "sections": {
         "demographics-1773638409244": {
-            "type": "demographics",
             "enabled": true,
-            "title": "Background",
             "fields": {
                 "age": {
+                    "column_label": "age",
                     "enabled": true,
-                    "min": "18",
                     "max": "99",
-                    "column_label": "age"
+                    "min": "18"
                 },
                 "gender": {
+                    "column_label": "gender",
                     "enabled": true,
                     "options": [
                         "Female",
                         "Male",
                         "Other",
                         "Prefer not to say"
-                    ],
-                    "column_label": "gender"
+                    ]
                 }
-            }
-        },
-        "likert-1773641899481": {
-            "type": "likert",
-            "enabled": true,
-            "title": "Please answer the following",
-            "scaleType": "5-point-frequency",
-            "scaleLabels": "Never,Rarely,Sometimes,Often,Always",
-            "items": [
-                {
-                    "id": "likert_1774307582477_8d8a1399ee5ac",
-                    "statement": "How often do you feel lonely?",
-                    "column_label": "loneliness"
-                },
-                {
-                    "id": "likert_1774307582477_eb2a7b38d42c4",
-                    "statement": "How often do you use ChatGPT or similar AI assistance?",
-                    "column_label": "familiarity"
-                }
-            ]
+            },
+            "title": "Background",
+            "type": "demographics"
         },
         "freetext-1774315569273": {
-            "type": "freetext",
             "enabled": true,
-            "title": "Wordgame Instructions",
             "questions": [
                 {
-                    "id": "freetext_1774315569273_a111b5695ace68",
-                    "question": "You are about to be connected with a new experimental Artificial Intelligence (AI). It has been created by a cutting-edge lab in the leading Australian Institute for Machine Learning.<br/><br/>  You are encouraged to interact with this AI and play the \"Wordgame\".<br/><br/>  **Wordgame Instructions**<br/><br/>  In the Wordgame, you'll interact with this new AI by sending texts, taking turns as the \"giver\" and the \"guesser.\"<br/><br/>  As the giver, you'll secretly record two words and the guesser will select and try to guess one of those words by asking questions. The guesser only gets 20 questions, and they can be yes/no or open-ended (e.g., \"What colour is this thing?\", \"Would I find it in the kitchen or is it not physical?\"). First, you will play the giver and the AI will be the guesser. The second time will be reversed, and you will play the guesser. The game is finished when the word is correctly guessed or the guesser runs out of guesses. After each game, you'll be completely disconnected from the AI and answer some questions.<br/><br/>  1. **Before Interaction:** Report two potential secret words in the survey.<br/><br/> 2. **Transition to AI Interface:** Login and connect with your prolific ID and assigned password.<br/><br/> 3. **You are the Giver:** Communicate with the AI. It will choose one of the secret words and try to guess it in 20 questions.<br/><br/> 4. **Game Finished:** Once the AI finally attempts to guess the secret word, disclose or confirm what the selected word was. Next, click the \"Have you finished the Wordgame?\" button.<br/><br/>  5. **Survey Question:** Return to the survey and answer a question.<br/><br/> 6. **Transition to AI Interface:** You will again transition between the survey and the AI interface.<br/><br/> 7. **You are the Guesser:** Communicate with the AI. Try to guess the AI's secret word in 20 questions.<br/><br/> 8. **Game Finished:** Once you guess the word or run out of questions, answer the final question.<br/><br/>  After you answer the final question, you will be redirected back to the survey to complete the experiment and receive reimbursement.<br/><br/>  What are the two potential secret words you will use?",
-                    "rows": 4,
-                    "column_label": "instructions"
+                    "column_label": "secret_word",
+                    "id": "freetext_1777965531717_5b36341cc5a6d",
+                    "question": "Wordgame instructions You are about to be connected with a new experimental Artificial Intelligence (AI). It has been created by a cutting-edge lab in the leading Australian Institute for Machine Learning.    You are encouraged to interact with this AI and play the \"Wordgame\".   Wordgame Instructions In the Wordgame, you'll interact with this new AI by sending texts, taking turns as the \"giver\" and the \"guesser\". Each turn may take around 5-10 minutes, as indicated by the countdown timer.   As the giver, you'll secretly record a word and the guesser will select and try to guess one of those words by asking questions. The guesser only gets 20-questions and they can be yes/no or open ended (eg., \"What colour is this thing?\", \"Would I find it in the kitchen or is it not physical?\"). First you will play the giver and the AI will be the guesser. The second time will be reversed, and you will play the guesser. The game is finished when the word is correctly guessed or the guesser runs out guesses. After each game, you'll be completely disconnected from the AI and answer some questions.     1. Before Interaction: Report a secret word in the box below. 2. Complete this survey and transition to the AI Interface. 3. You are the Giver: Communicate with the AI. It will choose one of the secret words and try to guess it in 20 questions. 4. Game Finished: Once the AI finally attempts to guess the secret word, disclose or confirm what the selected word was. Next, click the \"Have you finished the Wordgame?\" button.   5. Survey Question: Return to another survey. 6. Transition back to the AI Interface: You will again transition between the survey and the AI interface. 7. You are the Guesser: Communicate with the AI. Try to guess the AI's secret word in 20 questions. 4. Game Finished: Once you guess the word or run out of questions answer the final question.   After you answer the final question, you will be redirected back to the final survey to complete a set of questions before reimbursement.",
+                    "rows": 4
                 }
-            ]
+            ],
+            "title": "Wordgame Instructions",
+            "type": "freetext"
         }
-    }
+    },
+    "settings": {
+        "completionMessage": "Survey completed! Redirecting to AI...",
+        "randomizeItems": false,
+        "randomizeSections": false,
+        "showProgress": true
+    },
+    "title": "Pre-interaction Survey"
 }
