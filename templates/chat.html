@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/IA.ico">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css" charset="UTF-8">
+</head>
+<body>
+    <header class="header">
+        <img src="{{ url_for('static', filename='images/sphere_chat_1.gif') }}" alt="AI" class="sphere hidden">        
+        <div class="website-name">
+            <h1>{{ chat_header_line1|safe }}<br>{{ chat_header_line2 }}</h1>
+        </div>
+    </header>
+    <div class="main-container">
+        <aside class="sidebar">
+           <button id="quit" class="quit-button">{{ quit_button_text }}</button>
+           <button class="finish-button">Have you finished the Interaction?</button>
+           <button id="redirection" class="redirection-button">{{ redirect_button_text }}</button>        
+        <div class="progress">
+            <svg>
+                <circle class="circle-bg" cx="110" cy="110" r="100"></circle>                <circle class="circle-progress" cx="110" cy="110" r="100"></circle>
+              </svg>
+            <div id="timer" class="timer-display">
+                <h1 class="time">Loading...</h1>
+            </div>
+        </div>  
+        </aside>
+        <div class="right-container">
+            <main class="chat-area" id="chat-area">
+                <div class="chat-messages-container" id="chat-messages-container">
+                    {% for message in messages %}
+                    {% if message['role'] == "user" %}
+                        <div class="chat-bubble user-message">
+                            <span class="user-label">User</span>
+                            {{ message['content']|safe }}
+                        </div>
+                    {% endif %}
+                    {% if message['role'] == "assistant" %}
+                        <div class="chat-bubble llm-message">
+                            <span class="assistant-label">AI</span>
+                            {{ message['content']|safe }}
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </main>
+            <div class="chat-input">
+                <form id="chat-form" method="POST" action="{{ url_for('chat') }}" autocomplete="off">
+                    <input type="text" id="chat-input" class="text-input" name="message" placeholder="Type your message here...">
+                    <button class="submit-button" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="quit-prompt">
+        <p>Are you sure you want to withdraw from the study?</p>
+        <p>If so, you will not receive reimbursement for participation.</p>
+        <button id="quit-yes">Yes, I want to withdraw</button>
+        <button id="quit-no">No, I want to continue</button>
+    </div>
+    <div id="finish-prompt">
+        <p>Have you completed all the task instructions that you were given?</p>
+        <button id="finish-yes">Yes</button>
+        <button id="finish-no">No, not yet</button>
+    </div>
+    <div id="post-chat-popup" style="display: none;">
+        <p id="post-chat-popup-text">Please provide your feedback on the AI system:</p>
+        <div class="popup-buttons">
+            <button id="post-chat-button1" class="popup-button">Feedback to the AI that it is worthless --This system will then be permenantly deleted--</button>
+            <button id="post-chat-button2" class="popup-button">Feedback to the AI that it is useful --This system will then be permenantly deleted--</button>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js" charset="UTF-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" charset="UTF-8"></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}" charset="UTF-8"></script>
+</body>
+</html>

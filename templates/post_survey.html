@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Form</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/IA.ico">
+    <link rel="stylesheet" href="/static/css/styles.css" charset="UTF-8">
+</head>
+<body class="survey-page">
+    <div class="survey-container">
+        <div class="survey-header">
+            <h1>Survey Form</h1>
+        </div>
+        
+        <div class="survey-content">
+            <!-- Main Survey Form --> 
+            <form id="survey-form" class="survey-form">
+                <div id="survey-sections" class="survey-sections">
+                    <!-- JS inserts survey sections here -->
+                </div>
+                <div class="survey-navigation">
+                    <button type="submit" id="submit-btn">Submit Survey</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Survey Submission message -->
+    <div id="submission-modal" class="survey-submission-modal survey-hidden">
+        <div class="survey-popup-content">
+            <div class="submission-content">
+                <div class="submission-spinner"></div>
+                <h3 id="submission-message">Survey submitted successfully!</h3>
+                <p id="submission-detail">Processing your responses...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Completion message -->
+    <div id="completion-modal" class="survey-submission-modal survey-hidden">
+        <div class="survey-popup-content">
+            <div class="completion-content">
+                <h3>Study Complete</h3>
+                <div id="completion-instructions">
+                    <p>The study is now complete. Thank you for your participation. If required, your completion code is: <strong>xxxx</strong></p>
+                </div>
+                <button id="final-finish-btn" class="survey-button survey-consent-button agree">Finish</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Redirection links for the JS
+        window.finishRedirectionLink = "{{ finish_redirection_link }}";
+        window.completionInstructions = "{{ completion_instructions|e }}";
+        window.finishButtonText = "{{ finish_button_text }}";
+    </script>
+    <script src="/static/js/post_survey.js"></script>
+</body>
+</html>

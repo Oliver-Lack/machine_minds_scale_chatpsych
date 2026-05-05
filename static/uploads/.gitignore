@@ -1,0 +1,10 @@
+*.pdf
+*.jpg
+*.png
+*.gif
+*.mp4
+*.mp3
+*.wav
+*.html
+
+!.gitignore

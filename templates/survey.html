@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test123 title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="survey-page">
+    <!-- Survey Consent Popup -->
+    <div id="consent-popup" class="survey-consent-popup">
+        <div class="survey-popup-content">
+            <h2>test123</h2>
+            <div class="consent-content">
+                <p>test123 info</p>
+                <p>test123 consent info</p>
+            </div>
+            
+            
+            
+            <button id="consent-agree-btn" class="survey-btn survey-btn-agree">Agree</button>
+            <button id="consent-quit-btn" class="survey-btn survey-btn-quit">Quit</button>
+        </div>
+    </div>
+
+    <!-- Survey Quit Confirmation Popup -->
+    <div id="quit-confirm-popup" class="survey-quit-confirm-popup survey-hidden">
+        <div class="survey-popup-content">
+            <h3>Are you sure you want to quit participation in this study?</h3>
+            <button id="quit-confirm-yes-btn" class="survey-btn survey-btn-quit">Yes, Quit</button>
+            <button id="quit-confirm-no-btn" class="survey-btn survey-btn-cancel">No, Go Back</button>
+        </div>
+    </div>
+
+    <div class="survey-container">
+        <div class="survey-header">
+            <h1>test123 title</h1>
+        </div>
+        
+        <div class="survey-content">
+            <form id="survey-form">
+
+        <!-- Demographics Section -->
+        <div class="survey-section" id="demographics-section">
+            <div class="survey-section-title">Demographics</div>
+
+            <label for="demographics-age">Age:</label>
+            <input type="number" id="demographics-age" name="age" min="18" max="99" required><br><br>
+
+            <label for="demographics-gender">Gender:</label>
+            <select id="demographics-gender" name="gender" required>
+                <option value="">Select...</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                <option value="other">Other</option>
+                <option value="prefer_not_to_say">Prefer not to say</option>
+            </select><br><br>
+        </div>
+
+        <!-- Dropdown Section -->
+        <div class="survey-section" id="dropdown_1754875601819">
+            <div class="survey-section-title">Selection</div>
+            <label for="dropdown_1754875601819_select">Please select an option:</label><br>
+            <select id="dropdown_1754875601819_select" name="dropdown_1754875601819_response" required>
+                <option value="">Select an option...</option>
+                <option value="Option 1">Option 1</option>
+                <option value="Option 2">Option 2</option>
+            </select><br><br>
+        </div>
+
+        <!-- Slider Section -->
+        <div class="survey-section" id="slider_1754875608019">
+            <div class="survey-section-title">Rating Scale</div>
+            <label for="slider_1754875608019_slider">Please rate using the slider:</label><br>
+            <div class="slider-container">
+                <div class="slider-labels">
+                    <span class="slider-min">0</span>
+                    <span class="slider-max">100</span>
+                </div>
+                <input type="range" id="slider_1754875608019_slider" name="slider_1754875608019_response" 
+                       min="0" max="100" value="50" 
+                       class="survey-slider" required>
+                <div class="slider-value-display">
+                    <span id="slider_1754875608019_value">50</span>
+                </div>
+                <script>
+                    document.getElementById('slider_1754875608019_slider').oninput = function() {
+                        document.getElementById('slider_1754875608019_value').textContent = this.value;
+                    }
+                </script>
+            </div>
+        </div>
+
+        <!-- Slider Section -->
+        <div class="survey-section" id="slider_1754875617266">
+            <div class="survey-section-title">Rating Scale</div>
+            <label for="slider_1754875617266_slider">Please rate using the slider:</label><br>
+            <div class="slider-container">
+                <div class="slider-labels">
+                    <span class="slider-min">Strongly Disagree</span>
+                    <span class="slider-max">Strongly Agree</span>
+                </div>
+                <input type="range" id="slider_1754875617266_slider" name="slider_1754875617266_response" 
+                       min="1" max="7" value="4" 
+                       class="survey-slider" required>
+                <div class="slider-value-display">
+                    <span id="slider_1754875617266_value">4</span>
+                </div>
+                <script>
+                    document.getElementById('slider_1754875617266_slider').oninput = function() {
+                        document.getElementById('slider_1754875617266_value').textContent = this.value;
+                    }
+                </script>
+            </div>
+        </div>
+
+                <div class="submit-section">
+                    <button type="submit" id="submit-btn">Submit Survey</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Survey Submission Modal -->
+    <div id="submission-modal" class="survey-submission-modal survey-hidden">
+        <div class="survey-popup-content">
+            <div class="submission-content">
+                <div class="submission-spinner"></div>
+                <h3 id="submission-message">Survey submitted successfully!</h3>
+                <p id="submission-detail">You will now be connected to the AI system.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Make quit redirection link available to external JS
+        window.quitRedirectionLink = "https://www.prolific.com/";
+    </script>
+    <script src="/static/js/pre_survey.js"></script>
+</body>
+</html>

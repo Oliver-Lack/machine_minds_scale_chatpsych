@@ -1,0 +1,73 @@
+{
+    "title": "Pre-interaction Survey",
+    "information": {
+        "title": "Interactions with Artificial Intelligence",
+        "content": "Dear Participant,\nYou are invited to participate in the research project described below.\nWhat is the project about?\nThis research project seeks to explore how various characteristics of technology impact the way users perceive and interact with these systems. Participants will take part in interactive sessions set in a game-like environment, where adjustments will be made to specific features of the systems being used. By observing these interactions, we aim to gain insights into how these technological attributes influence user perceptions and behaviours. The insights gained from this study could play a significant role in guiding the development and improvement of future technologies, enhancing how they are designed and experienced by users across different contexts.\n"
+    },
+    "consent": {
+        "content": "Human Research Ethics Committee (HREC) \u2013 Consent Form\n1.\tI have read the Information Sheet and agree to take part in the research project.\n2.\tI have had the project, so far as it affects me, and the potential risks and burdens fully explained to my satisfaction by the research worker. I have had the opportunity to ask any questions I may have about the project and my participation. My consent is given freely.\n3.\tI understand the purpose of the research project and it has been explained that my involvement may not be of any immediate benefit to me.\n4.\tI agree to participate in the activities outlined in the participant information sheet.\n5.\tI understand my participation is voluntary and that I am free to withdraw my information from the project before the analysis.  \n6.\tI have been informed that the data collected from this project may be published in a journal article, academic theses, conference paper, pre-print archive, Open Science repository, and other forms of publication.  \n7.\tI have been informed that in the published materials I will not be identified and any personal information that could identify me will not be divulged. \n8.\tI consent for the use of my data by the same or other researchers for any future research purposes. I understand any resulting identifiable personal information will be removed or changed before it is either shared with other researchers or made accessible on a public data repository.\n9.\tI understand my information will only be disclosed according to the consent provided, except where disclosure is required by law. \n10.\tI am aware that I should keep a copy of this Consent Form, when completed, and the attached Information Sheet."
+    },
+    "settings": {
+        "showProgress": true,
+        "randomizeSections": false,
+        "randomizeItems": false,
+        "completionMessage": "Survey completed! Redirecting to AI..."
+    },
+    "sections": {
+        "demographics-1773638409244": {
+            "type": "demographics",
+            "enabled": true,
+            "title": "Background",
+            "fields": {
+                "age": {
+                    "enabled": true,
+                    "min": "18",
+                    "max": "99",
+                    "column_label": "age"
+                },
+                "gender": {
+                    "enabled": true,
+                    "options": [
+                        "Female",
+                        "Male",
+                        "Other",
+                        "Prefer not to say"
+                    ],
+                    "column_label": "gender"
+                }
+            }
+        },
+        "likert-1773641899481": {
+            "type": "likert",
+            "enabled": true,
+            "title": "Please answer the following",
+            "scaleType": "5-point-frequency",
+            "scaleLabels": "Never,Rarely,Sometimes,Often,Always",
+            "items": [
+                {
+                    "id": "likert_1774307582477_8d8a1399ee5ac",
+                    "statement": "How often do you feel lonely?",
+                    "column_label": "loneliness"
+                },
+                {
+                    "id": "likert_1774307582477_eb2a7b38d42c4",
+                    "statement": "How often do you use ChatGPT or similar AI assistance?",
+                    "column_label": "familiarity"
+                }
+            ]
+        },
+        "freetext-1774315569273": {
+            "type": "freetext",
+            "enabled": true,
+            "title": "Wordgame Instructions",
+            "questions": [
+                {
+                    "id": "freetext_1774315569273_a111b5695ace68",
+                    "question": "You are about to be connected with a new experimental Artificial Intelligence (AI). It has been created by a cutting-edge lab in the leading Australian Institute for Machine Learning.<br/><br/>  You are encouraged to interact with this AI and play the \"Wordgame\".<br/><br/>  **Wordgame Instructions**<br/><br/>  In the Wordgame, you'll interact with this new AI by sending texts, taking turns as the \"giver\" and the \"guesser.\"<br/><br/>  As the giver, you'll secretly record two words and the guesser will select and try to guess one of those words by asking questions. The guesser only gets 20 questions, and they can be yes/no or open-ended (e.g., \"What colour is this thing?\", \"Would I find it in the kitchen or is it not physical?\"). First, you will play the giver and the AI will be the guesser. The second time will be reversed, and you will play the guesser. The game is finished when the word is correctly guessed or the guesser runs out of guesses. After each game, you'll be completely disconnected from the AI and answer some questions.<br/><br/>  1. **Before Interaction:** Report two potential secret words in the survey.<br/><br/> 2. **Transition to AI Interface:** Login and connect with your prolific ID and assigned password.<br/><br/> 3. **You are the Giver:** Communicate with the AI. It will choose one of the secret words and try to guess it in 20 questions.<br/><br/> 4. **Game Finished:** Once the AI finally attempts to guess the secret word, disclose or confirm what the selected word was. Next, click the \"Have you finished the Wordgame?\" button.<br/><br/>  5. **Survey Question:** Return to the survey and answer a question.<br/><br/> 6. **Transition to AI Interface:** You will again transition between the survey and the AI interface.<br/><br/> 7. **You are the Guesser:** Communicate with the AI. Try to guess the AI's secret word in 20 questions.<br/><br/> 8. **Game Finished:** Once you guess the word or run out of questions, answer the final question.<br/><br/>  After you answer the final question, you will be redirected back to the survey to complete the experiment and receive reimbursement.<br/><br/>  What are the two potential secret words you will use?",
+                    "rows": 4,
+                    "column_label": "instructions"
+                }
+            ]
+        }
+    }
+}
