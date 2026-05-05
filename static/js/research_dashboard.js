@@ -3356,6 +3356,13 @@ function populateSectionData(sectionId, sectionConfig) {
         const fileInput = sectionElement.querySelector(`#image-upload-${sectionId}`);
         if (fileInput && sectionConfig.file_path) {
             fileInput.setAttribute('data-file-path', sectionConfig.file_path);
+            // Restore the filename display in the status div
+            const statusDiv = sectionElement.querySelector(`#image-file-status-${sectionId}`);
+            if (statusDiv) {
+                const fileName = sectionConfig.file_path.split('/').pop();
+                statusDiv.innerHTML = `<span class="file-success">✓ ${fileName} uploaded</span>`;
+                statusDiv.className = 'file-status success';
+            }
         }
 
         const requireResponseCheckbox = sectionElement.querySelector(`#require-response-${sectionId}`);
@@ -3405,6 +3412,13 @@ function populateSectionData(sectionId, sectionConfig) {
         const fileInput = sectionElement.querySelector(`#video-upload-${sectionId}`);
         if (fileInput && sectionConfig.file_path) {
             fileInput.setAttribute('data-file-path', sectionConfig.file_path);
+            // Restore the filename display in the status div
+            const statusDiv = sectionElement.querySelector(`#video-file-status-${sectionId}`);
+            if (statusDiv) {
+                const fileName = sectionConfig.file_path.split('/').pop();
+                statusDiv.innerHTML = `<span class="file-success">✓ ${fileName} uploaded</span>`;
+                statusDiv.className = 'file-status success';
+            }
         }
 
         const selects = sectionElement.querySelectorAll('select');
@@ -3485,6 +3499,13 @@ function populateSectionData(sectionId, sectionConfig) {
         const fileInput = sectionElement.querySelector(`#pdf-upload-${sectionId}`);
         if (fileInput && sectionConfig.file_path) {
             fileInput.setAttribute('data-file-path', sectionConfig.file_path);
+            // Restore the filename display in the status div
+            const statusDiv = sectionElement.querySelector(`#pdf-file-status-${sectionId}`);
+            if (statusDiv) {
+                const fileName = sectionConfig.file_path.split('/').pop();
+                statusDiv.innerHTML = `<span class="file-success">✓ ${fileName} uploaded</span>`;
+                statusDiv.className = 'file-status success';
+            }
         }
 
         const requireResponseCheckbox = sectionElement.querySelector(`#require-response-${sectionId}`);

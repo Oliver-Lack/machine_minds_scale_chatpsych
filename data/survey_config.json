@@ -22,7 +22,7 @@
             "image-1777967201636": {
                 "type": "image",
                 "enabled": true,
-                "title": "Image Display",
+                "title": "Answer the following:",
                 "description": "",
                 "alt_text": "",
                 "display_size": "medium",
@@ -168,7 +168,7 @@
             "image-1777969160688": {
                 "type": "image",
                 "enabled": true,
-                "title": "",
+                "title": "Answer the following:",
                 "description": "",
                 "alt_text": "",
                 "display_size": "medium",
@@ -362,28 +362,17 @@
                     "Boat"
                 ],
                 "column_label": "attention_check_1"
-            },
-            "slider-1777970237901": {
-                "type": "slider",
-                "enabled": true,
-                "title": "Rating Scale",
-                "question": "Please rate using the slider:",
-                "required": true,
-                "slider_type": "labels",
-                "column_label": "",
-                "items": [
-                    {
-                        "id": "slider_1777970237901_1a5bb61e02c6b",
-                        "question": "Please rate using the slider:",
-                        "column_label": ""
-                    }
-                ],
-                "left_label": "Strongly Disagree",
-                "right_label": "Strongly Agree",
-                "steps": 7,
-                "default_value": 4
             }
-        }
+        },
+        "sectionOrder": [
+            "image-1777967201636",
+            "slider-1777967216741",
+            "image-1777969160688",
+            "slider-copy_1777968956311_643471d52e4b7",
+            "slider-1777969305197",
+            "slider-copy_1777969773657_ea4841a00dd7a",
+            "checkbox-1777970061373"
+        ]
     },
     "sections": {
         "demographics-1773638409244": {
