@@ -3703,6 +3703,15 @@ select option:checked {
   border-radius: 8px;
 }
 
+.slider-item-prompt {
+  display: block;
+  font-weight: 600;
+  color: #1a1a1a !important;
+  margin-bottom: 8px;
+  font-size: 1.1em;
+  font-family: 'Helvetica', sans-serif;
+}
+
 .slider-labels {
   display: flex;
   justify-content: space-between;

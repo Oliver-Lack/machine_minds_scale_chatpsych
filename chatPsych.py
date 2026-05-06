@@ -3801,12 +3801,52 @@ def generate_slider_section(config, section_id):
     """Generate slider section HTML"""
     section_id = section_id.replace('-', '_')
     title = config.get('title', 'Rating Scale')
-    question = config.get('question', 'Please rate using the slider:')
+    question = (config.get('question') or '').strip()
     slider_type = config.get('slider_type', 'labels') 
     required = config.get('required', False)
     required_attr = 'required' if required else ''
     raw_items = config.get('items', [])
     items = []
+
+    def _escape_attr(text: str) -> str:
+        if text is None:
+            return ''
+        return (str(text)
+                .replace('&', '&amp;')
+                .replace('"', '&quot;')
+                .replace('<', '&lt;')
+                .replace('>', '&gt;'))
+
+    def _get_item_left_right_labels(item_dict: dict, item_text: str):
+        if not isinstance(item_dict, dict):
+            item_dict = {}
+
+        # Direct item-level labels (snake_case or camelCase)
+        left_label = item_dict.get('left_label') or item_dict.get('leftLabel')
+        right_label = item_dict.get('right_label') or item_dict.get('rightLabel')
+
+        # Section-level templates: allow {item} to produce per-item labels
+        left_tpl = config.get('left_label_template') or config.get('leftLabelTemplate')
+        right_tpl = config.get('right_label_template') or config.get('rightLabelTemplate')
+        if (not left_label) and left_tpl and item_text:
+            try:
+                left_label = str(left_tpl).format(item=item_text)
+            except Exception:
+                left_label = str(left_tpl)
+        if (not right_label) and right_tpl and item_text:
+            try:
+                right_label = str(right_tpl).format(item=item_text)
+            except Exception:
+                right_label = str(right_tpl)
+
+        # Section-level fallback labels
+        if not left_label:
+            left_label = config.get('left_label') or config.get('leftLabel')
+        if not right_label:
+            right_label = config.get('right_label') or config.get('rightLabel')
+
+        return left_label, right_label
+
     for i, item in enumerate(raw_items):
         if isinstance(item, dict):
             item_question = item.get('question') or item.get('statement') or item.get('text') or item.get('item') or ''
@@ -3816,21 +3856,43 @@ def generate_slider_section(config, section_id):
             item_question = str(item)
             item_id = i
             item_label = ''
-        items.append({'id': item_id, 'question': item_question, 'column_label': item_label})
+
+        left_label, right_label = _get_item_left_right_labels(item if isinstance(item, dict) else {}, item_question)
+        items.append({
+            'id': item_id,
+            'question': item_question,
+            'column_label': item_label,
+            'left_label': left_label,
+            'right_label': right_label,
+        })
 
     if not items:
-        items = [{'id': 'default', 'question': question, 'column_label': config.get('column_label', '')}]
+        items = [{'id': 'default', 'question': '', 'column_label': config.get('column_label', '')}]
 
-    def _render_slider_fields(field_name, slider_id, value_id, item_question, item=None):
+    def _render_slider_fields(field_name, slider_id, value_id, item=None, extra_input_attrs: str = ''):
         if slider_type == 'numeric':
             min_val = config.get('min_value', 0)
             max_val = config.get('max_value', 100)
             default_val = config.get('default_value', int((min_val + max_val) / 2))
+
+            left_label = None
+            right_label = None
+            if item and isinstance(item, dict):
+                left_label = item.get('left_label') or item.get('leftLabel')
+                right_label = item.get('right_label') or item.get('rightLabel')
+            if not left_label:
+                left_label = config.get('left_label') or config.get('leftLabel')
+            if not right_label:
+                right_label = config.get('right_label') or config.get('rightLabel')
+
+            left_display = f"{min_val} — {left_label}" if left_label else str(min_val)
+            right_display = f"{max_val} — {right_label}" if right_label else str(max_val)
+
             return f'''                <div class="slider-labels">
-                    <span class="slider-min">{min_val}</span>
-                    <span class="slider-max">{max_val}</span>
+                    <span class="slider-min">{left_display}</span>
+                    <span class="slider-max">{right_display}</span>
                 </div>
-                <input type="range" id="{slider_id}" name="{field_name}" 
+                  <input type="range" id="{slider_id}" name="{field_name}"{extra_input_attrs} 
                        min="{min_val}" max="{max_val}" value="{default_val}" 
                        class="survey-slider" {required_attr} data-slider-interacted="false">
                 <div class="slider-value-display">
@@ -3847,11 +3909,11 @@ def generate_slider_section(config, section_id):
 
         # Use item-level labels if available, otherwise fall back to section-level labels
         if item and isinstance(item, dict):
-            left_label = item.get('left_label', config.get('left_label', 'Strongly Disagree'))
-            right_label = item.get('right_label', config.get('right_label', 'Strongly Agree'))
+            left_label = item.get('left_label') or item.get('leftLabel') or config.get('left_label') or config.get('leftLabel') or 'Strongly Disagree'
+            right_label = item.get('right_label') or item.get('rightLabel') or config.get('right_label') or config.get('rightLabel') or 'Strongly Agree'
         else:
-            left_label = config.get('left_label', 'Strongly Disagree')
-            right_label = config.get('right_label', 'Strongly Agree')
+            left_label = config.get('left_label') or config.get('leftLabel') or 'Strongly Disagree'
+            right_label = config.get('right_label') or config.get('rightLabel') or 'Strongly Agree'
         
         steps = config.get('steps', 7)
         default_val = config.get('default_value', int(steps / 2))
@@ -3859,7 +3921,7 @@ def generate_slider_section(config, section_id):
                     <span class="slider-min">{left_label}</span>
                     <span class="slider-max">{right_label}</span>
                 </div>
-                <input type="range" id="{slider_id}" name="{field_name}" 
+                  <input type="range" id="{slider_id}" name="{field_name}"{extra_input_attrs} 
                        min="1" max="{steps}" value="{default_val}" 
                        class="survey-slider" {required_attr} data-slider-interacted="false">
                 <div class="slider-value-display">
@@ -3874,44 +3936,31 @@ def generate_slider_section(config, section_id):
                 </script>
 '''
 
-    if len(items) > 1:
-        rendered_items = ''
-        if question:
-            rendered_items += f'                <div class="slider-section-instructions">{question}</div>\n'
+    rendered_items = ''
+    if question:
+        rendered_items += f'                <div class="slider-section-instructions">{question}</div>\n'
 
-        for item in items:
-            item_id = item.get('id')
-            item_question = item.get('question', '')
-            item_field_name = f"{section_id}_response_{item_id}"
-            item_slider_id = f"{section_id}_slider_{item_id}"
-            item_value_id = f"{section_id}_value_{item_id}"
-            rendered_items += f'''                <div class="slider-item">
-                    <label for="{item_slider_id}">{item_question}</label><br>
-{_render_slider_fields(item_field_name, item_slider_id, item_value_id, item_question, item)}                </div>
+    for item in items:
+        item_id = item.get('id')
+        item_question = (item.get('question') or '').strip()
+        item_field_name = f"{section_id}_response_{item_id}" if len(items) > 1 else f"{section_id}_response"
+        item_slider_id = f"{section_id}_slider_{item_id}" if len(items) > 1 else f"{section_id}_slider"
+        item_value_id = f"{section_id}_value_{item_id}" if len(items) > 1 else f"{section_id}_value"
+        prompt_html = f'                    <div class="slider-item-prompt">{item_question}</div>\n' if item_question else ''
+        aria_label = _escape_attr(item_question) if item_question else ''
+        aria_attr = f' aria-label="{aria_label}"' if aria_label else ''
+        rendered_items += f'''                <div class="slider-item">
+    {prompt_html}                    <div class="slider-container">
+    {_render_slider_fields(item_field_name, item_slider_id, item_value_id, item, extra_input_attrs=aria_attr)}                    </div>
+                </div>
 '''
-
-        return f'''
-        <!-- Slider Section -->
-        <div class="survey-section" id="{section_id}">
-            <div class="survey-section-title">{title}</div>
-            <div class="slider-items">
-{rendered_items}            </div>
-        </div>
-'''
-
-    item = items[0]
-    item_question = item.get('question', question)
-    item_field_name = f"{section_id}_response"
-    item_slider_id = f"{section_id}_slider"
-    item_value_id = f"{section_id}_value"
 
     return f'''
         <!-- Slider Section -->
         <div class="survey-section" id="{section_id}">
             <div class="survey-section-title">{title}</div>
-            <label for="{item_slider_id}">{item_question}</label><br>
-            <div class="slider-container">
-{_render_slider_fields(item_field_name, item_slider_id, item_value_id, item_question, item)}            </div>
+            <div class="slider-items">
+{rendered_items}            </div>
         </div>
 '''
 

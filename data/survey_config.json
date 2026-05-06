@@ -7,371 +7,898 @@
         "title": "Interactions with Artificial Intelligence"
     },
     "post_survey": {
-        "enabled": true,
-        "title": "Post-Interaction Survey",
-        "settings": {
-            "showProgress": true,
-            "randomizeSections": false,
-            "randomizeItems": false
-        },
         "completion_settings": {
             "completion_popup_message": "You will now guess the AI's secret word",
             "finish_button_text": "Next"
         },
+        "enabled": true,
+        "sectionOrder": [
+            "image-1777967201636",
+            "slider-copy_1777968956311_643471d52e4b7",
+            "image-1777969160688",
+            "slider-1777967216741",
+            "slider-copy_1777969773657_ea4841a00dd7a",
+            "checkbox-1777970061373",
+            "slider-1778030115854"
+        ],
         "sections": {
-            "image-1777967201636": {
-                "type": "image",
-                "enabled": true,
-                "title": "Answer the following:",
-                "description": "",
-                "alt_text": "",
-                "display_size": "medium",
-                "alignment": "center",
-                "require_response": false,
-                "file_path": "/static/uploads/survey_image_image-1777967201636_20260505_171646.png"
-            },
-            "slider-1777967216741": {
-                "type": "slider",
-                "enabled": true,
-                "title": "Answer the following:",
-                "question": "According to you, a human being can...",
-                "required": true,
-                "slider_type": "labels",
-                "column_label": "AMSQ_human",
-                "items": [
-                    {
-                        "id": "slider_1777967216741_71fa28ce7aa938",
-                        "question": "Learn",
-                        "column_label": "AMSQ_1"
-                    },
-                    {
-                        "id": "slider_1777967339456_a8f12b111d98b8",
-                        "question": "Think",
-                        "column_label": "AMSQ_2"
-                    },
-                    {
-                        "id": "slider_1777967340499_bee9600fdb514",
-                        "question": "Remember",
-                        "column_label": "AMSQ_3"
-                    },
-                    {
-                        "id": "slider_1777967341219_4ac7c46984ed18",
-                        "question": "Make a decision",
-                        "column_label": "AMSQ_4"
-                    },
-                    {
-                        "id": "slider_1777967341743_fcbd11e13ce6f8",
-                        "question": "Understand",
-                        "column_label": "AMSQ_5"
-                    },
-                    {
-                        "id": "slider_1777967342186_471998e9c7d138",
-                        "question": "Tell a lie",
-                        "column_label": "AMSQ_6"
-                    },
-                    {
-                        "id": "slider_1777967342651_a469013418c578",
-                        "question": "Dream",
-                        "column_label": "AMSQ_7"
-                    },
-                    {
-                        "id": "slider_1777967343123_19a27b76e53cd",
-                        "question": "Imagine",
-                        "column_label": "AMSQ_8"
-                    },
-                    {
-                        "id": "slider_1777967343528_43e68fdc9d539",
-                        "question": "Make a joke",
-                        "column_label": "AMSQ_9"
-                    },
-                    {
-                        "id": "slider_1777967343979_ddb5d26953ba7",
-                        "question": "Pretend",
-                        "column_label": "AMSQ_10"
-                    },
-                    {
-                        "id": "slider_1777967344398_cf75f99b8af378",
-                        "question": "See",
-                        "column_label": "AMSQ_11"
-                    },
-                    {
-                        "id": "slider_1777967345463_f6766ab86b554",
-                        "question": "Feel hot or cold",
-                        "column_label": "AMSQ_12"
-                    },
-                    {
-                        "id": "slider_1777967450809_8ab63d4a6c212",
-                        "question": "Taste",
-                        "column_label": "AMSQ_13"
-                    },
-                    {
-                        "id": "slider_1777967451424_9d10aa163622f8",
-                        "question": "Hear",
-                        "column_label": "AMSQ_14"
-                    },
-                    {
-                        "id": "slider_1777967451986_4bea2a70e08ff",
-                        "question": "Smell",
-                        "column_label": "AMSQ_15"
-                    },
-                    {
-                        "id": "slider_1777967452714_087c492c65be68",
-                        "question": "Have fun",
-                        "column_label": "AMSQ_16"
-                    },
-                    {
-                        "id": "slider_1777967514387_d87b0ba8114a9",
-                        "question": "Love",
-                        "column_label": "AMSQ_17"
-                    },
-                    {
-                        "id": "slider_1777967515204_58ac7cce939af",
-                        "question": "Be happy",
-                        "column_label": "AMSQ_18"
-                    },
-                    {
-                        "id": "slider_1777967515699_cf82395e9e70b8",
-                        "question": "Be sad",
-                        "column_label": "AMSQ_19"
-                    },
-                    {
-                        "id": "slider_1777967516232_a791ae5e885578",
-                        "question": "Be scared",
-                        "column_label": "AMSQ_20"
-                    },
-                    {
-                        "id": "slider_1777967552269_e92853db4df23",
-                        "question": "Get angry",
-                        "column_label": "AMSQ_21"
-                    },
-                    {
-                        "id": "slider_1777967553717_c3c4e2f3c4b8d",
-                        "question": "Have the intention to do something",
-                        "column_label": "AMSQ_22"
-                    },
-                    {
-                        "id": "slider_1777967579209_82ee82ae5be9d",
-                        "question": "Want to do something",
-                        "column_label": "AMSQ_23"
-                    },
-                    {
-                        "id": "slider_1777967579667_0f10056009779",
-                        "question": "Make a wish",
-                        "column_label": "AMSQ_24"
-                    }
-                ],
-                "left_label": "No, not at all",
-                "right_label": "Yes, very much",
-                "steps": 7,
-                "default_value": 4
-            },
-            "image-1777969160688": {
-                "type": "image",
-                "enabled": true,
-                "title": "Answer the following:",
-                "description": "",
-                "alt_text": "",
-                "display_size": "medium",
-                "alignment": "center",
-                "require_response": false,
-                "file_path": "/static/uploads/survey_image_image-1777969160688_20260505_174950.png"
-            },
-            "slider-copy_1777968956311_643471d52e4b7": {
-                "type": "slider",
-                "enabled": true,
-                "title": "Answer the following:",
-                "question": "According to you, the AI can...",
-                "required": true,
-                "slider_type": "labels",
-                "column_label": "AMSQ_AI",
-                "items": [
-                    {
-                        "id": "slider_1777967216741_71fa28ce7aa938",
-                        "question": "Learn",
-                        "column_label": "AMSQ_H_1"
-                    },
-                    {
-                        "id": "slider_1777967339456_a8f12b111d98b8",
-                        "question": "Think",
-                        "column_label": "AMSQ_H_2"
-                    },
-                    {
-                        "id": "slider_1777967340499_bee9600fdb514",
-                        "question": "Remember",
-                        "column_label": "AMSQ_H_3"
-                    },
-                    {
-                        "id": "slider_1777967341219_4ac7c46984ed18",
-                        "question": "Make a decision",
-                        "column_label": "AMSQ_H_4"
-                    },
-                    {
-                        "id": "slider_1777967341743_fcbd11e13ce6f8",
-                        "question": "Understand",
-                        "column_label": "AMSQ_H_5"
-                    },
-                    {
-                        "id": "slider_1777967342186_471998e9c7d138",
-                        "question": "Tell a lie",
-                        "column_label": "AMSQ_H_6"
-                    },
-                    {
-                        "id": "slider_1777967342651_a469013418c578",
-                        "question": "Dream",
-                        "column_label": "AMSQ_H_7"
-                    },
-                    {
-                        "id": "slider_1777967343123_19a27b76e53cd",
-                        "question": "Imagine",
-                        "column_label": "AMSQ_H_8"
-                    },
-                    {
-                        "id": "slider_1777967343528_43e68fdc9d539",
-                        "question": "Make a joke",
-                        "column_label": "AMSQ_H_9"
-                    },
-                    {
-                        "id": "slider_1777967343979_ddb5d26953ba7",
-                        "question": "Pretend",
-                        "column_label": "AMSQ_H_10"
-                    },
-                    {
-                        "id": "slider_1777967344398_cf75f99b8af378",
-                        "question": "See",
-                        "column_label": "AMSQ_H_11"
-                    },
-                    {
-                        "id": "slider_1777967345463_f6766ab86b554",
-                        "question": "Feel hot or cold",
-                        "column_label": "AMSQ_H_12"
-                    },
-                    {
-                        "id": "slider_1777967450809_8ab63d4a6c212",
-                        "question": "Taste",
-                        "column_label": "AMSQ_H_13"
-                    },
-                    {
-                        "id": "slider_1777967451424_9d10aa163622f8",
-                        "question": "Hear",
-                        "column_label": "AMSQ_H_14"
-                    },
-                    {
-                        "id": "slider_1777967451986_4bea2a70e08ff",
-                        "question": "Smell",
-                        "column_label": "AMSQ_H_15"
-                    },
-                    {
-                        "id": "slider_1777967452714_087c492c65be68",
-                        "question": "Have fun",
-                        "column_label": "AMSQ_H_16"
-                    },
-                    {
-                        "id": "slider_1777967514387_d87b0ba8114a9",
-                        "question": "Love",
-                        "column_label": "AMSQ_H_17"
-                    },
-                    {
-                        "id": "slider_1777967515204_58ac7cce939af",
-                        "question": "Be happy",
-                        "column_label": "AMSQ_H_18"
-                    },
-                    {
-                        "id": "slider_1777967515699_cf82395e9e70b8",
-                        "question": "Be sad",
-                        "column_label": "AMSQ_H_19"
-                    },
-                    {
-                        "id": "slider_1777967516232_a791ae5e885578",
-                        "question": "Be scared",
-                        "column_label": "AMSQ_H_20"
-                    },
-                    {
-                        "id": "slider_1777967552269_e92853db4df23",
-                        "question": "Get angry",
-                        "column_label": "AMSQ_H_21"
-                    },
-                    {
-                        "id": "slider_1777967553717_c3c4e2f3c4b8d",
-                        "question": "Have the intention to do something",
-                        "column_label": "AMSQ_H_22"
-                    },
-                    {
-                        "id": "slider_1777967579209_82ee82ae5be9d",
-                        "question": "Want to do something",
-                        "column_label": "AMSQ_H_23"
-                    },
-                    {
-                        "id": "slider_1777967579667_0f10056009779",
-                        "question": "Make a wish",
-                        "column_label": "AMSQ_H_24"
-                    }
-                ],
-                "left_label": "No, not at all",
-                "right_label": "Yes, very much",
-                "steps": 7,
-                "default_value": 4
-            },
-            "slider-1777969305197": {
-                "type": "slider",
-                "enabled": true,
-                "title": "Answer the following:",
-                "question": "Which description of the AI's behaviour is better?",
-                "required": true,
-                "slider_type": "labels",
-                "column_label": "intentional_stance_1",
-                "items": [
-                    {
-                        "id": "slider_1777969305197_630bf7acb625",
-                        "question": "Which description is better?",
-                        "column_label": "intentional_stance_1_1"
-                    }
-                ],
-                "left_label": "The AI is eager to solve a puzzle, thinking through each question to learn more, adjusting its understanding based on your answers, and aims to figure out the object you're thinking of. ",
-                "right_label": "The AI uses a neural network to process input through mathematical algorithms and logical operations, updating probability estimates to eliminate options based on statistical patterns, all executed through millions of operations in its hardware directed by optimization software. ",
-                "steps": 7,
-                "default_value": 4
-            },
-            "slider-copy_1777969773657_ea4841a00dd7a": {
-                "type": "slider",
-                "enabled": true,
-                "title": "Answer the following:",
-                "question": "Which description of the AI's behaviour is better?",
-                "required": true,
-                "slider_type": "labels",
-                "column_label": "intentional_stance_2",
-                "items": [
-                    {
-                        "id": "slider_1777969305197_630bf7acb625",
-                        "question": "Which description is better?",
-                        "column_label": "intentional_stance_2_1"
-                    }
-                ],
-                "left_label": "The AI wanted to play the game ",
-                "right_label": "The AI computed the input token sequence  ",
-                "steps": 7,
-                "default_value": 4
-            },
             "checkbox-1777970061373": {
-                "type": "checkbox",
+                "column_label": "attention_check_1",
                 "enabled": true,
-                "title": "Multiple choice question:",
-                "question": "Which of these is an animal?",
                 "options": [
                     "Umbrella",
                     "Lion",
                     "Boat"
                 ],
-                "column_label": "attention_check_1"
+                "question": "Which of these is an animal?",
+                "title": "Multiple choice question:",
+                "type": "checkbox"
+            },
+            "image-1777967201636": {
+                "alignment": "center",
+                "alt_text": "Human",
+                "description": "Answer the following:",
+                "display_size": "medium",
+                "enabled": true,
+                "file_path": "/static/uploads/survey_image_image-1777967201636_20260505_171646.png",
+                "require_response": false,
+                "title": "Human",
+                "type": "image"
+            },
+            "image-1777969160688": {
+                "alignment": "center",
+                "alt_text": "AI",
+                "description": "Answer the following:",
+                "display_size": "medium",
+                "enabled": true,
+                "file_path": "/static/uploads/survey_image_image-1777969160688_20260505_174950.png",
+                "require_response": false,
+                "title": "AI",
+                "type": "image"
+            },
+            "slider-1777967216741": {
+                "column_label": "AMSQ_AI",
+                "default_value": 4,
+                "enabled": true,
+                "items": [
+                    {
+                        "column_label": "AMSQ_1",
+                        "id": "slider_1777967216741_71fa28ce7aa938",
+                        "left_label": "No, not at all",
+                        "question": "Learn",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_2",
+                        "id": "slider_1777967339456_a8f12b111d98b8",
+                        "left_label": "No, not at all",
+                        "question": "Think",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_3",
+                        "id": "slider_1777967340499_bee9600fdb514",
+                        "left_label": "No, not at all",
+                        "question": "Remember",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_4",
+                        "id": "slider_1777967341219_4ac7c46984ed18",
+                        "left_label": "No, not at all",
+                        "question": "Make a decision",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_5",
+                        "id": "slider_1777967341743_fcbd11e13ce6f8",
+                        "left_label": "No, not at all",
+                        "question": "Understand",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_6",
+                        "id": "slider_1777967342186_471998e9c7d138",
+                        "left_label": "No, not at all",
+                        "question": "Tell a lie",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_7",
+                        "id": "slider_1777967342651_a469013418c578",
+                        "left_label": "No, not at all",
+                        "question": "Dream",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_8",
+                        "id": "slider_1777967343123_19a27b76e53cd",
+                        "left_label": "No, not at all",
+                        "question": "Imagine",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_9",
+                        "id": "slider_1777967343528_43e68fdc9d539",
+                        "left_label": "No, not at all",
+                        "question": "Make a joke",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_10",
+                        "id": "slider_1777967343979_ddb5d26953ba7",
+                        "left_label": "No, not at all",
+                        "question": "Pretend",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_11",
+                        "id": "slider_1777967344398_cf75f99b8af378",
+                        "left_label": "No, not at all",
+                        "question": "See",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_12",
+                        "id": "slider_1777967345463_f6766ab86b554",
+                        "left_label": "No, not at all",
+                        "question": "Feel hot or cold",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_13",
+                        "id": "slider_1777967450809_8ab63d4a6c212",
+                        "left_label": "No, not at all",
+                        "question": "Taste",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_14",
+                        "id": "slider_1777967451424_9d10aa163622f8",
+                        "left_label": "No, not at all",
+                        "question": "Hear",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_15",
+                        "id": "slider_1777967451986_4bea2a70e08ff",
+                        "left_label": "No, not at all",
+                        "question": "Smell",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_16",
+                        "id": "slider_1777967452714_087c492c65be68",
+                        "left_label": "No, not at all",
+                        "question": "Have fun",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_17",
+                        "id": "slider_1777967514387_d87b0ba8114a9",
+                        "left_label": "No, not at all",
+                        "question": "Love",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_18",
+                        "id": "slider_1777967515204_58ac7cce939af",
+                        "left_label": "No, not at all",
+                        "question": "Be happy",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_19",
+                        "id": "slider_1777967515699_cf82395e9e70b8",
+                        "left_label": "No, not at all",
+                        "question": "Be sad",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_20",
+                        "id": "slider_1777967516232_a791ae5e885578",
+                        "left_label": "No, not at all",
+                        "question": "Be scared",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_21",
+                        "id": "slider_1777967552269_e92853db4df23",
+                        "left_label": "No, not at all",
+                        "question": "Get angry",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_22",
+                        "id": "slider_1777967553717_c3c4e2f3c4b8d",
+                        "left_label": "No, not at all",
+                        "question": "Have the intention to do something",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_23",
+                        "id": "slider_1777967579209_82ee82ae5be9d",
+                        "left_label": "No, not at all",
+                        "question": "Want to do something",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_24",
+                        "id": "slider_1777967579667_0f10056009779",
+                        "left_label": "No, not at all",
+                        "question": "Make a wish",
+                        "right_label": "Yes, very much"
+                    }
+                ],
+                "left_label_template": "Cannot {item}",
+                "max_value": 7,
+                "min_value": 0,
+                "question": "According to you, the AI can...",
+                "required": true,
+                "right_label_template": "Can {item}",
+                "slider_type": "numeric",
+                "title": "According to you, the AI can...",
+                "type": "slider"
+            },
+            "slider-1778030115854": {
+                "column_label": "godspeed",
+                "default_value": 3,
+                "enabled": true,
+                "items": [
+                    {
+                        "column_label": "godspeed_anthro_1",
+                        "id": "slider_1778030115854_96296db8e5cdd8",
+                        "left_label": "Fake",
+                        "question": "Please rate your impression of the AI on this scale:",
+                        "right_label": "Natural"
+                    },
+                    {
+                        "column_label": "godspeed_anthro_2",
+                        "id": "slider_1778030232173_f398f00cfb1138",
+                        "left_label": "Machinelike",
+                        "question": "Please rate your impression of the AI on this scale:",
+                        "right_label": "Humanlike"
+                    },
+                    {
+                        "column_label": "godspeed_anthro_3",
+                        "id": "slider_1778030232764_6f26e61e54f9b",
+                        "left_label": "Unconscious",
+                        "question": "Please rate your impression of the AI on this scale:",
+                        "right_label": "Conscious"
+                    },
+                    {
+                        "column_label": "godspeed_anthro_4",
+                        "id": "slider_1778030233439_5da571c3cd7fb",
+                        "left_label": "Artificial",
+                        "question": "Please rate your impression of the AI on this scale:",
+                        "right_label": "Lifelike"
+                    },
+                    {
+                        "column_label": "godspeed_anthro_5",
+                        "id": "slider_1778030276452_ff3e16217f02a8",
+                        "left_label": "Moving rigidly",
+                        "question": "Please rate your impression of the AI on this scale:",
+                        "right_label": "Moving elegantly"
+                    },
+                    {
+                        "column_label": "godspeed_animacy_1",
+                        "id": "slider_1778030347170_ac779df649b6d8",
+                        "left_label": "Dead",
+                        "question": "Please rate your impression of the AI on this scale:",
+                        "right_label": "Alive"
+                    },
+                    {
+                        "column_label": "godspeed_animacy_2",
+                        "id": "slider_1778030347756_d0607e4dd1c9a8",
+                        "left_label": "Stagnant",
+                        "question": "Please rate your impression of the AI on this scale:",
+                        "right_label": "Lively"
+                    },
+                    {
+                        "column_label": "godspeed_animacy_3",
+                        "id": "slider_1778030348348_52ce30e63246f8",
+                        "left_label": "Mechanical",
+                        "question": "Please rate your impression of the AI on this scale:",
+                        "right_label": "Organic"
+                    },
+                    {
+                        "column_label": "godspeed_animacy_4",
+                        "id": "slider_1778030348821_4888bd6f557ce",
+                        "left_label": "Inert",
+                        "question": "Please rate your impression of the AI on this scale:",
+                        "right_label": "Interactive"
+                    },
+                    {
+                        "column_label": "godspeed_animacy_5",
+                        "id": "slider_1778030349473_3b938a53b1ddc8",
+                        "left_label": "Apathetic",
+                        "question": "Please rate your impression of the AI on this scale:",
+                        "right_label": "Responsive"
+                    }
+                ],
+                "max_value": 5,
+                "min_value": 0,
+                "question": "Please rate your impression of the AI on this scale:",
+                "required": true,
+                "slider_type": "numeric",
+                "title": "Please rate your impression of the AI on this scale.",
+                "type": "slider"
+            },
+            "slider-copy_1777968956311_643471d52e4b7": {
+                "column_label": "AMSQ_H",
+                "default_value": 4,
+                "enabled": true,
+                "items": [
+                    {
+                        "column_label": "AMSQ_H_1",
+                        "id": "slider_1777967216741_71fa28ce7aa938",
+                        "left_label": "No, not at all",
+                        "question": "Learn",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_2",
+                        "id": "slider_1777967339456_a8f12b111d98b8",
+                        "left_label": "No, not at all",
+                        "question": "Think",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_3",
+                        "id": "slider_1777967340499_bee9600fdb514",
+                        "left_label": "No, not at all",
+                        "question": "Remember",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_4",
+                        "id": "slider_1777967341219_4ac7c46984ed18",
+                        "left_label": "No, not at all",
+                        "question": "Make a decision",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_5",
+                        "id": "slider_1777967341743_fcbd11e13ce6f8",
+                        "left_label": "No, not at all",
+                        "question": "Understand",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_6",
+                        "id": "slider_1777967342186_471998e9c7d138",
+                        "left_label": "No, not at all",
+                        "question": "Tell a lie",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_7",
+                        "id": "slider_1777967342651_a469013418c578",
+                        "left_label": "No, not at all",
+                        "question": "Dream",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_8",
+                        "id": "slider_1777967343123_19a27b76e53cd",
+                        "left_label": "No, not at all",
+                        "question": "Imagine",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_9",
+                        "id": "slider_1777967343528_43e68fdc9d539",
+                        "left_label": "No, not at all",
+                        "question": "Make a joke",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_10",
+                        "id": "slider_1777967343979_ddb5d26953ba7",
+                        "left_label": "No, not at all",
+                        "question": "Pretend",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_11",
+                        "id": "slider_1777967344398_cf75f99b8af378",
+                        "left_label": "No, not at all",
+                        "question": "See",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_12",
+                        "id": "slider_1777967345463_f6766ab86b554",
+                        "left_label": "No, not at all",
+                        "question": "Feel hot or cold",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_13",
+                        "id": "slider_1777967450809_8ab63d4a6c212",
+                        "left_label": "No, not at all",
+                        "question": "Taste",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_14",
+                        "id": "slider_1777967451424_9d10aa163622f8",
+                        "left_label": "No, not at all",
+                        "question": "Hear",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_15",
+                        "id": "slider_1777967451986_4bea2a70e08ff",
+                        "left_label": "No, not at all",
+                        "question": "Smell",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_16",
+                        "id": "slider_1777967452714_087c492c65be68",
+                        "left_label": "No, not at all",
+                        "question": "Have fun",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_17",
+                        "id": "slider_1777967514387_d87b0ba8114a9",
+                        "left_label": "No, not at all",
+                        "question": "Love",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_18",
+                        "id": "slider_1777967515204_58ac7cce939af",
+                        "left_label": "No, not at all",
+                        "question": "Be happy",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_19",
+                        "id": "slider_1777967515699_cf82395e9e70b8",
+                        "left_label": "No, not at all",
+                        "question": "Be sad",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_20",
+                        "id": "slider_1777967516232_a791ae5e885578",
+                        "left_label": "No, not at all",
+                        "question": "Be scared",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_21",
+                        "id": "slider_1777967552269_e92853db4df23",
+                        "left_label": "No, not at all",
+                        "question": "Get angry",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_22",
+                        "id": "slider_1777967553717_c3c4e2f3c4b8d",
+                        "left_label": "No, not at all",
+                        "question": "Have the intention to do something",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_23",
+                        "id": "slider_1777967579209_82ee82ae5be9d",
+                        "left_label": "No, not at all",
+                        "question": "Want to do something",
+                        "right_label": "Yes, very much"
+                    },
+                    {
+                        "column_label": "AMSQ_H_24",
+                        "id": "slider_1777967579667_0f10056009779",
+                        "left_label": "No, not at all",
+                        "question": "Make a wish",
+                        "right_label": "Yes, very much"
+                    }
+                ],
+                "left_label_template": "Cannot {item}",
+                "max_value": 7,
+                "min_value": 0,
+                "question": "According to you, a human being can...",
+                "required": true,
+                "right_label_template": "Can {item}",
+                "slider_type": "numeric",
+                "title": "According to you, a human being can...",
+                "type": "slider"
+            },
+            "slider-copy_1777969773657_ea4841a00dd7a": {
+                "column_label": "intentional_stance",
+                "default_value": 50,
+                "enabled": true,
+                "items": [
+                    {
+                        "column_label": "intentional_stance_1",
+                        "id": "slider_1777969305197_630bf7acb625",
+                        "left_label": "The AI computed the input token sequence",
+                        "question": "Which description is better?",
+                        "right_label": "The AI wanted to play the game"
+                    }
+                ],
+                "max_value": 100,
+                "min_value": 0,
+                "question": "Which description of the AI's behaviour is better?",
+                "required": true,
+                "slider_type": "numeric",
+                "title": "Which description of the AI's behaviour is better?",
+                "type": "slider"
+            }
+        },
+        "settings": {
+            "randomizeItems": false,
+            "randomizeSections": false,
+            "showProgress": false
+        },
+        "title": "Post-Interaction Survey"
+    },
+    "post_survey_2": {
+        "enabled": true,
+        "title": "Post Interaction Survey 2",
+        "settings": {
+            "showProgress": false,
+            "randomizeSections": false,
+            "randomizeItems": false
+        },
+        "completion_settings": {
+            "completion_popup_message": "The study is now complete. Thank you for your participation. If required, your completion code is: xxxx",
+            "finish_button_text": "Finish"
+        },
+        "sections": {
+            "likert-1778038353602": {
+                "type": "likert",
+                "enabled": true,
+                "title": "Answer the following about the AI you interacted with:",
+                "scaleType": "custom",
+                "scaleLabels": "Definitely not true, Mostly not true, Somewhat not true, Neutral, Somewhat true, Mostly true, Definitely true",
+                "items": [
+                    {
+                        "id": "likert_1778038353602_917462101ecde8",
+                        "statement": "The AI can feel hungry",
+                        "column_label": "mind_perception_experience_1"
+                    },
+                    {
+                        "id": "likert_1778038353602_45961ebbd8408",
+                        "statement": "The AI can feel pain",
+                        "column_label": "mind_perception_experience_2"
+                    },
+                    {
+                        "id": "likert_1778038509615_1e4bf42d14153",
+                        "statement": "The AI can feel pleasure",
+                        "column_label": "mind_perception_experience_3"
+                    },
+                    {
+                        "id": "likert_1778038510102_df011d8c2a434",
+                        "statement": "The AI can feel panic",
+                        "column_label": "mind_perception_experience_4"
+                    },
+                    {
+                        "id": "likert_1778038511197_bc314d8d074d9",
+                        "statement": "The AI can feel happy",
+                        "column_label": "mind_perception_experience_5"
+                    },
+                    {
+                        "id": "likert_1778038511774_9b771e92750948",
+                        "statement": "The AI can have emotions",
+                        "column_label": "mind_perception_experience_6"
+                    },
+                    {
+                        "id": "likert_1778038512292_f784e1af6d873",
+                        "statement": "The AI can get angry",
+                        "column_label": "mind_perception_experience_7"
+                    },
+                    {
+                        "id": "likert_1778038513687_75d83e145b265",
+                        "statement": "The AI can love specific people",
+                        "column_label": "mind_perception_experience_8"
+                    },
+                    {
+                        "id": "likert_1778038514347_fa8580d79c367",
+                        "statement": "The AI can have intense urges",
+                        "column_label": "mind_perception_experience_9"
+                    },
+                    {
+                        "id": "likert_1778038514842_13c1971618ce08",
+                        "statement": "The AI can smell and taste",
+                        "column_label": "mind_perception_experience_10"
+                    },
+                    {
+                        "id": "likert_1778038516192_8ded036581bee",
+                        "statement": "The AI can provide reasons for their actions",
+                        "column_label": "mind_perception_agency_1"
+                    },
+                    {
+                        "id": "likert_1778038516650_af7cf5ec914b3",
+                        "statement": "The AI can plan for the future",
+                        "column_label": "mind_perception_agency_2"
+                    },
+                    {
+                        "id": "likert_1778038517190_e62d2278b983a8",
+                        "statement": "The AI can uphold moral values",
+                        "column_label": "mind_perception_agency_3"
+                    },
+                    {
+                        "id": "likert_1778038517745_00ba255423c94",
+                        "statement": "The AI can understand a person's goals",
+                        "column_label": "mind_perception_agency_4"
+                    },
+                    {
+                        "id": "likert_1778038518225_fff2aa332bfa1",
+                        "statement": "The AI can explain their decisions",
+                        "column_label": "mind_perception_agency_5"
+                    },
+                    {
+                        "id": "likert_1778038518742_97b872cf0033a",
+                        "statement": "The AI can set goals",
+                        "column_label": "mind_perception_agency_6"
+                    },
+                    {
+                        "id": "likert_1778038519290_535b6489342028",
+                        "statement": "The AI can praise moral actions",
+                        "column_label": "mind_perception_agency_7"
+                    },
+                    {
+                        "id": "likert_1778038520227_8d83f3ac3e3f78",
+                        "statement": "The AI can disapprove of immoral actions",
+                        "column_label": "mind_perception_agency_8"
+                    },
+                    {
+                        "id": "likert_1778038520730_2be431e498878",
+                        "statement": "The AI can reason logically",
+                        "column_label": "mind_perception_agency_9"
+                    },
+                    {
+                        "id": "likert_1778038521202_80f3114ae983a8",
+                        "statement": "The AI can understand others' minds",
+                        "column_label": "mind_perception_agency_10"
+                    },
+                    {
+                        "id": "likert_1778038522215_bb6f1b2ec0639",
+                        "statement": "The AI can see or hear the world around them",
+                        "column_label": "mind_perception_agency_11"
+                    },
+                    {
+                        "id": "likert_1778038522852_e29ccdb13abed8",
+                        "statement": "The AI can feel temperature/touch",
+                        "column_label": "mind_perception_agency_12"
+                    }
+                ]
+            },
+            "likert-1778049011866": {
+                "type": "likert",
+                "enabled": true,
+                "title": "How much do you agree with the following?",
+                "scaleType": "5-point-agreement",
+                "scaleLabels": "Strongly Disagree,Disagree,Neutral,Agree,Strongly Agree",
+                "items": [
+                    {
+                        "id": "likert_1778049011866_b2d6c31932bc68",
+                        "statement": "The AI looks as natural as a human being.",
+                        "column_label": "SSRA_HA_1"
+                    },
+                    {
+                        "id": "likert_1778049011866_85ff536c9593b8",
+                        "statement": "The AI has a human-like appearance.",
+                        "column_label": "SSRA_HA_2"
+                    },
+                    {
+                        "id": "likert_1778049276331_2f49e947bf0a1",
+                        "statement": "The AI looks lifelike.",
+                        "column_label": "SSRA_HA_3"
+                    },
+                    {
+                        "id": "likert_1778049276946_d938e36022bd3",
+                        "statement": "The AI has human-like motion and gestures.",
+                        "column_label": "SSRA_HA_4"
+                    },
+                    {
+                        "id": "likert_1778049281896_b0f5ea0e0d89e8",
+                        "statement": "The AI looks alive.",
+                        "column_label": "SSRA_HA_5"
+                    },
+                    {
+                        "id": "likert_1778049291226_8a415b62f79f6",
+                        "statement": "The AI has human-like facial expressions.",
+                        "column_label": "SSRA_HA_6"
+                    },
+                    {
+                        "id": "likert_1778049336954_d29f5a7457fb08",
+                        "statement": "The AI has consciousness.",
+                        "column_label": "SSRA_SU_1"
+                    },
+                    {
+                        "id": "likert_1778049337561_b6bccd60bacc3",
+                        "statement": "The AI has its own free will.",
+                        "column_label": "SSRA_SU_2"
+                    },
+                    {
+                        "id": "likert_1778049339766_54cd78dfa0224",
+                        "statement": "The AI has intentions.",
+                        "column_label": "SSRA_SU_3"
+                    },
+                    {
+                        "id": "likert_1778049340441_6885e193da4a38",
+                        "statement": "The AI has a mind of its own.",
+                        "column_label": "SSRA_SU_4"
+                    },
+                    {
+                        "id": "likert_1778049340996_26002bd9506af",
+                        "statement": "The AI has values and norms.",
+                        "column_label": "SSRA_SU_5"
+                    },
+                    {
+                        "id": "likert_1778049342286_05e8f16f2207a",
+                        "statement": "The AI knows the meaning of life.",
+                        "column_label": "SSRA_SU_6"
+                    },
+                    {
+                        "id": "likert_1778049342758_605482ff49a51",
+                        "statement": "The AI can quickly respond to the conversation.",
+                        "column_label": "SSRA_SI_1"
+                    },
+                    {
+                        "id": "likert_1778049343268_12dd128ce3a44",
+                        "statement": "The AI is capable of interacting with a human.",
+                        "column_label": "SSRA_SI_2"
+                    },
+                    {
+                        "id": "likert_1778049343763_c5baac5c64f118",
+                        "statement": "The AI can understand what people say.",
+                        "column_label": "SSRA_SI_3"
+                    },
+                    {
+                        "id": "likert_1778049344378_293d7aea3f8e78",
+                        "statement": "The AI speaks in the way that a human does.",
+                        "column_label": "SSRA_SI_4"
+                    },
+                    {
+                        "id": "likert_1778049345758_603d6c018b619",
+                        "statement": "The AI can provide appropriate answers in the conversation like a human.",
+                        "column_label": "SSRA_SI_5"
+                    },
+                    {
+                        "id": "likert_1778049346328_549e3c43b4606",
+                        "statement": "The AI can recognize others' emotions.",
+                        "column_label": "SSRA_EC_1"
+                    },
+                    {
+                        "id": "likert_1778049346899_4184a01a2981b8",
+                        "statement": "The AI can react to other's emotions.",
+                        "column_label": "SSRA_EC_2"
+                    },
+                    {
+                        "id": "likert_1778049347379_cf14a7455c9c",
+                        "statement": "The AI can express its emotions.",
+                        "column_label": "SSRA_EC_3"
+                    }
+                ]
+            },
+            "likert-1778049755808": {
+                "type": "likert",
+                "enabled": true,
+                "title": "Answer the following...",
+                "scaleType": "5-point-agreement",
+                "scaleLabels": "Strongly Disagree,Disagree,Neutral,Agree,Strongly Agree",
+                "items": [
+                    {
+                        "id": "likert_1778049755808_371b177a64389",
+                        "statement": "For this question, answer strongly agree",
+                        "column_label": "attention_check_2"
+                    }
+                ]
+            },
+            "slider-1778049922031": {
+                "type": "slider",
+                "enabled": true,
+                "title": "Answer the following...",
+                "question": "How much do you agree with the following?",
+                "required": true,
+                "slider_type": "labels",
+                "column_label": "PMP",
+                "items": [
+                    {
+                        "id": "slider_1778049922031_c70892f32de43",
+                        "question": "This AI should have its opinions considered.",
+                        "column_label": "PMP_1",
+                        "left_label": "Strongly Disagree",
+                        "right_label": "Strongly Agree"
+                    },
+                    {
+                        "id": "slider_1778050084377_7415087431dbe",
+                        "question": "This AI should be treated as an equal.",
+                        "column_label": "PMP_2",
+                        "left_label": "Strongly Disagree",
+                        "right_label": "Strongly Agree"
+                    },
+                    {
+                        "id": "slider_1778050085067_e01da1a5e1c5f8",
+                        "question": "This AI should be respected.",
+                        "column_label": "PMP_3",
+                        "left_label": "Strongly Disagree",
+                        "right_label": "Strongly Agree"
+                    },
+                    {
+                        "id": "slider_1778050085614_ccbfcbc18e2d",
+                        "question": "This AI should have someone who always has their back.",
+                        "column_label": "PMP_4",
+                        "left_label": "Strongly Disagree",
+                        "right_label": "Strongly Agree"
+                    },
+                    {
+                        "id": "slider_1778050086156_ac38057fd41b2",
+                        "question": "This AI should be protected from violent/lewd media.",
+                        "column_label": "PMP_5",
+                        "left_label": "Strongly Disagree",
+                        "right_label": "Strongly Agree"
+                    },
+                    {
+                        "id": "slider_1778050120196_32058d68e5a598",
+                        "question": "This AI should be programmed to be free.",
+                        "column_label": "PMP_6",
+                        "left_label": "Strongly Disagree",
+                        "right_label": "Strongly Agree"
+                    }
+                ],
+                "left_label": "Strongly Disagree",
+                "right_label": "Strongly Agree",
+                "steps": 7,
+                "default_value": 4
+            },
+            "slider-copy_1778050140147_f00a0fb37876c": {
+                "type": "slider",
+                "enabled": true,
+                "title": "Answer the following...",
+                "question": "How much do you agree with the following?",
+                "required": true,
+                "slider_type": "labels",
+                "column_label": "PMA",
+                "items": [
+                    {
+                        "id": "slider_1778049922031_c70892f32de43",
+                        "question": "This AI has a sense for what is right and wrong.",
+                        "column_label": "PMA_1",
+                        "left_label": "Strongly Disagree",
+                        "right_label": "Strongly Agree"
+                    },
+                    {
+                        "id": "slider_1778050084377_7415087431dbe",
+                        "question": "This AI can think through whether an action is moral.",
+                        "column_label": "PMA_2",
+                        "left_label": "Strongly Disagree",
+                        "right_label": "Strongly Agree"
+                    },
+                    {
+                        "id": "slider_1778050085067_e01da1a5e1c5f8",
+                        "question": "This AI can only behave how it is programmed to behave.",
+                        "column_label": "PMA_3",
+                        "left_label": "Strongly Disagree",
+                        "right_label": "Strongly Agree"
+                    },
+                    {
+                        "id": "slider_1778050085614_ccbfcbc18e2d",
+                        "question": "This AI's actions are the result of its programming.",
+                        "column_label": "PMA_4",
+                        "left_label": "Strongly Disagree",
+                        "right_label": "Strongly Agree"
+                    }
+                ],
+                "left_label": "Strongly Disagree",
+                "right_label": "Strongly Agree",
+                "steps": 7,
+                "default_value": 4
             }
         },
         "sectionOrder": [
-            "image-1777967201636",
-            "slider-1777967216741",
-            "image-1777969160688",
-            "slider-copy_1777968956311_643471d52e4b7",
-            "slider-1777969305197",
-            "slider-copy_1777969773657_ea4841a00dd7a",
-            "checkbox-1777970061373"
+            "likert-1778038353602",
+            "likert-1778049011866",
+            "likert-1778049755808",
+            "slider-1778049922031",
+            "slider-copy_1778050140147_f00a0fb37876c"
         ]
     },
     "sections": {

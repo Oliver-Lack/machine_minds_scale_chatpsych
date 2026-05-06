@@ -1929,8 +1929,8 @@ ${renderSectionControlButtons(sectionId)}
             <label>Section Title:</label>
             <input type="text" value="Rating Scale" placeholder="Section title">
             
-            <label>Question/Instructions:</label>
-            <input type="text" value="Please rate using the slider:" placeholder="Question or instructions">
+            <label>Section Question (required):</label>
+            <input type="text" class="slider-section-question-input" placeholder="Enter the overarching question for this section" required>
 
             <label>Column Label (hidden from participant):</label>
             <input type="text" class="column-label-input" placeholder="e.g., slider_${sectionId}_response">
@@ -1946,11 +1946,11 @@ ${renderSectionControlButtons(sectionId)}
             <br>
             <div class="slider-config" id="slider-config-${sectionId}">
                 <div class="label-config">
-                    <label>Left Label:</label>
-                    <input type="text" value="Strongly Disagree" placeholder="Left label">
+                    <label>Default Left Label:</label>
+                    <input type="text" value="Strongly Disagree" placeholder="Default left label">
                     
-                    <label>Right Label:</label>
-                    <input type="text" value="Strongly Agree" placeholder="Right label">
+                    <label>Default Right Label:</label>
+                    <input type="text" value="Strongly Agree" placeholder="Default right label">
                     
                     <label>Number of Steps:</label>
                     <input type="number" value="7" min="2" max="20">
@@ -1975,8 +1975,12 @@ ${renderSectionControlButtons(sectionId)}
                 <h5>Slider Items:</h5>
                 <div class="slider-items" id="slider-items-${sectionId}">
                     <div class="slider-item" data-item-id="${itemId1}">
-                        <label>Question:</label>
-                        <input type="text" class="slider-question-input" value="Please rate using the slider:" placeholder="Enter question">
+                        <label>Question (optional):</label>
+                        <input type="text" class="slider-question-input" placeholder="Optional item question">
+                        <label>Left label:</label>
+                        <input type="text" class="slider-left-label-input" value="Strongly Disagree" placeholder="Left label">
+                        <label>Right label:</label>
+                        <input type="text" class="slider-right-label-input" value="Strongly Agree" placeholder="Right label">
                         <label>Column label (hidden from participant):</label>
                         <input type="text" class="column-label-input" placeholder="e.g., slider_${sectionId}_response" style="width: 260px;">
                         <button type="button" class="btn-remove" onclick="removeLikertItem(this)">×</button>
@@ -2273,12 +2277,20 @@ function addLikertItemToSection(sectionId) {
 function addSliderItemToSection(sectionId) {
     const container = document.getElementById(`slider-items-${sectionId}`);
     const itemId = generateInternalId('slider');
+    const sectionElement = document.querySelector(`[data-section="${sectionId}"]`);
+    const defaultLabelInputs = sectionElement ? sectionElement.querySelectorAll('.label-config input[type="text"]') : [];
+    const defaultLeftLabel = defaultLabelInputs[0] ? defaultLabelInputs[0].value : 'Strongly Disagree';
+    const defaultRightLabel = defaultLabelInputs[1] ? defaultLabelInputs[1].value : 'Strongly Agree';
     const newItem = document.createElement('div');
     newItem.className = 'slider-item';
     newItem.setAttribute('data-item-id', itemId);
     newItem.innerHTML = `
-        <label>Question:</label>
-        <input type="text" class="slider-question-input" placeholder="Enter question">
+        <label>Question (optional):</label>
+        <input type="text" class="slider-question-input" placeholder="Optional item question">
+        <label>Left label:</label>
+        <input type="text" class="slider-left-label-input" value="${defaultLeftLabel}" placeholder="Left label">
+        <label>Right label:</label>
+        <input type="text" class="slider-right-label-input" value="${defaultRightLabel}" placeholder="Right label">
         <label>Column label (hidden from participant):</label>
         <input type="text" class="column-label-input" placeholder="e.g., slider_score" style="width: 260px;">
         <button type="button" class="btn-remove" onclick="removeLikertItem(this)">×</button>
@@ -2501,31 +2513,58 @@ function uploadFormFile(file, type) {
 
 function saveSurveyConfiguration() {
     const config = collectSurveyConfiguration();
-    
+
     // Validate configuration before saving
     const validationError = validateSurveyConfiguration(config);
     if (validationError) {
         showFeedback('survey-feedback', validationError, 'error');
         return;
     }
-    
-    fetch('/save-survey-config', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(config)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showFeedback('survey-feedback', 'Survey configuration saved successfully!', 'success');
-        } else {
-            showFeedback('survey-feedback', 'Error saving configuration: ' + data.error, 'error');
-        }
-    })
-    .catch(error => {
-        showFeedback('survey-feedback', 'Error saving configuration', 'error');
+
+    // Preserve any slider template fields that may not be exposed in the UI
+    fetch('/get-survey-config')
+        .then(response => response.json())
+        .then(existingConfig => {
+            preserveSliderTemplateFields(config, existingConfig);
+            return fetch('/save-survey-config', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(config)
+            });
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showFeedback('survey-feedback', 'Survey configuration saved successfully!', 'success');
+            } else {
+                showFeedback('survey-feedback', 'Error saving configuration: ' + data.error, 'error');
+            }
+        })
+        .catch(error => {
+            showFeedback('survey-feedback', 'Error saving configuration', 'error');
+        });
+}
+
+function preserveSliderTemplateFields(targetConfig, existingConfig) {
+    if (!targetConfig || !existingConfig) return;
+    if (!targetConfig.sections || !existingConfig.sections) return;
+
+    const keys = ['left_label_template', 'right_label_template', 'leftLabelTemplate', 'rightLabelTemplate'];
+    Object.keys(targetConfig.sections).forEach(sectionId => {
+        const targetSection = targetConfig.sections[sectionId];
+        const existingSection = existingConfig.sections ? existingConfig.sections[sectionId] : null;
+        if (!targetSection || targetSection.type !== 'slider' || !existingSection) return;
+
+        keys.forEach(key => {
+            if ((targetSection[key] === undefined || targetSection[key] === null || String(targetSection[key]).trim() === '')
+                && existingSection[key] !== undefined
+                && existingSection[key] !== null
+                && String(existingSection[key]).trim() !== '') {
+                targetSection[key] = existingSection[key];
+            }
+        });
     });
 }
 
@@ -2719,32 +2758,48 @@ function collectSurveyConfiguration() {
                 column_label: columnLabelInput ? columnLabelInput.value.trim() : ''
             };
         } else if (sectionType === 'slider') {
-            const sectionTextInputs = sectionElement.querySelectorAll('.section-content > input[type="text"]');
-            const questionInput = sectionTextInputs[1];
+            const sectionQuestionInput = sectionElement.querySelector('.slider-section-question-input');
             const columnLabelInput = sectionElement.querySelector('.section-content > input.column-label-input');
             const requiredCheckbox = sectionElement.querySelector('.section-content > input[type="checkbox"]');
             const sliderTypeRadio = sectionElement.querySelector(`input[name="slider-type-${sectionId}"]:checked`);
             const sliderType = sliderTypeRadio ? sliderTypeRadio.value : 'labels';
             const sliderItems = [];
 
+            const defaultItemLeft = 'Strongly Disagree';
+            const defaultItemRight = 'Strongly Agree';
+
             sectionElement.querySelectorAll('.slider-items .slider-item').forEach(itemDiv => {
-                const itemQuestionInput = itemDiv.querySelector('.slider-question-input') || itemDiv.querySelector('input[type="text"]');
+                const itemQuestionInput = itemDiv.querySelector('.slider-question-input');
+                const itemLeftLabelInput = itemDiv.querySelector('.slider-left-label-input');
+                const itemRightLabelInput = itemDiv.querySelector('.slider-right-label-input');
                 const itemColumnLabelInput = itemDiv.querySelector('.column-label-input');
                 const questionText = itemQuestionInput ? itemQuestionInput.value.trim() : '';
-                if (!questionText) return;
+                const leftLabelText = itemLeftLabelInput ? itemLeftLabelInput.value.trim() : '';
+                const rightLabelText = itemRightLabelInput ? itemRightLabelInput.value.trim() : '';
 
-                sliderItems.push({
+                const itemConfig = {
                     id: itemDiv.getAttribute('data-item-id') || generateInternalId('slider'),
                     question: questionText,
                     column_label: itemColumnLabelInput ? itemColumnLabelInput.value.trim() : ''
-                });
+                };
+
+                if (sliderType === 'labels') {
+                    itemConfig.left_label = leftLabelText;
+                    itemConfig.right_label = rightLabelText;
+                } else {
+                    // Avoid overriding numeric slider labels with UI defaults.
+                    if (leftLabelText && leftLabelText !== defaultItemLeft) itemConfig.left_label = leftLabelText;
+                    if (rightLabelText && rightLabelText !== defaultItemRight) itemConfig.right_label = rightLabelText;
+                }
+
+                sliderItems.push(itemConfig);
             });
             
             let sliderConfig = {
                 type: 'slider',
                 enabled: true,
                 title: titleInput ? titleInput.value : 'Rating Scale',
-                question: questionInput ? questionInput.value : 'Please rate using the slider:',
+                question: sectionQuestionInput ? sectionQuestionInput.value.trim() : '',
                 required: requiredCheckbox ? requiredCheckbox.checked : false,
                 slider_type: sliderType,
                 column_label: columnLabelInput ? columnLabelInput.value.trim() : '',
@@ -3279,7 +3334,7 @@ function populateSectionData(sectionId, sectionConfig) {
         }
     } else if (sectionConfig.type === 'slider') {
         // Populate slider section
-        const questionInput = sectionElement.querySelectorAll('input[type="text"]')[1];
+        const questionInput = sectionElement.querySelector('.slider-section-question-input');
         if (questionInput && sectionConfig.question) {
             questionInput.value = sectionConfig.question;
         }
@@ -3300,6 +3355,8 @@ function populateSectionData(sectionId, sectionConfig) {
             sectionConfig.items.forEach(item => {
                 const itemObj = (typeof item === 'string') ? { question: item } : (item || {});
                 const question = (itemObj.question || itemObj.statement || itemObj.text || itemObj.item || '').toString();
+                const leftLabel = (itemObj.left_label || sectionConfig.left_label || 'Strongly Disagree').toString();
+                const rightLabel = (itemObj.right_label || sectionConfig.right_label || 'Strongly Agree').toString();
                 const columnLabel = (itemObj.column_label || '').toString();
                 const itemId = (itemObj.id || generateInternalId('slider')).toString();
 
@@ -3307,8 +3364,12 @@ function populateSectionData(sectionId, sectionConfig) {
                 newItem.className = 'slider-item';
                 newItem.setAttribute('data-item-id', itemId);
                 newItem.innerHTML = `
-                    <label>Question:</label>
-                    <input type="text" class="slider-question-input" value="${question}" placeholder="Enter question">
+                    <label>Question (optional):</label>
+                    <input type="text" class="slider-question-input" value="${question}" placeholder="Optional item question">
+                    <label>Left label:</label>
+                    <input type="text" class="slider-left-label-input" value="${leftLabel}" placeholder="Left label">
+                    <label>Right label:</label>
+                    <input type="text" class="slider-right-label-input" value="${rightLabel}" placeholder="Right label">
                     <label>Column label (hidden from participant):</label>
                     <input type="text" class="column-label-input" value="${columnLabel}" placeholder="e.g., slider_score" style="width: 260px;">
                     <button type="button" class="btn-remove" onclick="removeLikertItem(this)">×</button>
@@ -4176,6 +4237,9 @@ function savePostSurveyConfiguration() {
             };
         }
         
+        // Preserve any slider template fields that may not be exposed in the UI
+        preserveSliderTemplateFields(config, mainConfig.post_survey);
+
         // Add post-survey configuration
         mainConfig.post_survey = config;
         console.log('Combined config to save:', mainConfig);
@@ -4421,55 +4485,71 @@ function collectPostSurveyConfiguration() {
                 column_label: columnLabelInput ? columnLabelInput.value.trim() : ''
             };
         } else if (sectionType === 'slider') {
-            const sectionTextInputs = sectionElement.querySelectorAll('.section-content > input[type="text"]');
-            const questionInput = sectionTextInputs[1];
+            const sectionQuestionInput = sectionElement.querySelector('.slider-section-question-input');
             const columnLabelInput = sectionElement.querySelector('.section-content > input.column-label-input');
             const requiredCheckbox = sectionElement.querySelector('.section-content > input[type="checkbox"]');
             const sliderTypeRadio = sectionElement.querySelector(`input[name="slider-type-${sectionId}"]:checked`);
             const sliderType = sliderTypeRadio ? sliderTypeRadio.value : 'labels';
             const sliderItems = [];
 
+            const defaultItemLeft = 'Strongly Disagree';
+            const defaultItemRight = 'Strongly Agree';
+
             sectionElement.querySelectorAll('.slider-items .slider-item').forEach(itemDiv => {
-                const itemQuestionInput = itemDiv.querySelector('.slider-question-input') || itemDiv.querySelector('input[type="text"]');
+                const itemQuestionInput = itemDiv.querySelector('.slider-question-input');
+                const itemLeftLabelInput = itemDiv.querySelector('.slider-left-label-input');
+                const itemRightLabelInput = itemDiv.querySelector('.slider-right-label-input');
                 const itemColumnLabelInput = itemDiv.querySelector('.column-label-input');
                 const questionText = itemQuestionInput ? itemQuestionInput.value.trim() : '';
-                if (!questionText) return;
+                const leftLabelText = itemLeftLabelInput ? itemLeftLabelInput.value.trim() : '';
+                const rightLabelText = itemRightLabelInput ? itemRightLabelInput.value.trim() : '';
 
-                sliderItems.push({
+                const itemConfig = {
                     id: itemDiv.getAttribute('data-item-id') || generateInternalId('slider'),
                     question: questionText,
                     column_label: itemColumnLabelInput ? itemColumnLabelInput.value.trim() : ''
-                });
+                };
+
+                if (sliderType === 'labels') {
+                    itemConfig.left_label = leftLabelText;
+                    itemConfig.right_label = rightLabelText;
+                } else {
+                    // Avoid overriding numeric slider labels with UI defaults.
+                    if (leftLabelText && leftLabelText !== defaultItemLeft) itemConfig.left_label = leftLabelText;
+                    if (rightLabelText && rightLabelText !== defaultItemRight) itemConfig.right_label = rightLabelText;
+                }
+
+                sliderItems.push(itemConfig);
             });
-            
+
             let sliderConfig = {
                 type: 'slider',
                 enabled: true,
                 title: titleInput ? titleInput.value : 'Rating Scale',
-                question: questionInput ? questionInput.value : 'Please rate using the slider:',
+                question: sectionQuestionInput ? sectionQuestionInput.value.trim() : '',
                 required: requiredCheckbox ? requiredCheckbox.checked : false,
                 slider_type: sliderType,
                 column_label: columnLabelInput ? columnLabelInput.value.trim() : '',
                 items: sliderItems
             };
-            
+
             if (sliderType === 'labels') {
                 const labelInputs = sectionElement.querySelectorAll('.label-config input[type="text"]');
                 const stepInput = sectionElement.querySelector('.label-config input[type="number"]:nth-of-type(1)');
                 const defaultInput = sectionElement.querySelector('.label-config input[type="number"]:nth-of-type(2)');
-                
+
                 sliderConfig.left_label = labelInputs[0] ? labelInputs[0].value : 'Strongly Disagree';
                 sliderConfig.right_label = labelInputs[1] ? labelInputs[1].value : 'Strongly Agree';
                 sliderConfig.steps = stepInput ? parseInt(stepInput.value) : 7;
                 sliderConfig.default_value = defaultInput ? parseInt(defaultInput.value) : 4;
             } else {
                 const numericInputs = sectionElement.querySelectorAll('.numeric-config input[type="number"]');
-                
+
                 sliderConfig.min_value = numericInputs[0] ? parseInt(numericInputs[0].value) : 0;
                 sliderConfig.max_value = numericInputs[1] ? parseInt(numericInputs[1].value) : 100;
                 sliderConfig.default_value = numericInputs[2] ? parseInt(numericInputs[2].value) : 50;
             }
-            
+
             config.sections[sectionId] = sliderConfig;
         } else if (sectionType === 'image') {
             const descriptionTextarea = sectionElement.querySelector('textarea');
@@ -4672,16 +4752,29 @@ function validateSurveyConfiguration(config) {
             if (!section.slider_type) {
                 return `Slider section "${section.title}" must have a slider type selected (labels or numeric).`;
             }
+
+            if (!section.question || section.question.trim() === '') {
+                return `Slider section "${section.title}" must have a section question defined.`;
+            }
+
+            if (!section.items || section.items.length === 0) {
+                return `Slider section "${section.title}" must have at least one item.`;
+            }
             
             if (section.slider_type === 'labels') {
-                if (!section.left_label || section.left_label.trim() === '') {
-                    return `Slider section "${section.title}" must have a left label defined.`;
-                }
-                if (!section.right_label || section.right_label.trim() === '') {
-                    return `Slider section "${section.title}" must have a right label defined.`;
-                }
                 if (!section.steps || section.steps < 2 || section.steps > 20) {
                     return `Slider section "${section.title}" must have steps between 2 and 20.`;
+                }
+
+                for (let index = 0; index < section.items.length; index++) {
+                    const item = section.items[index] || {};
+                    const itemLabel = item.question || item.id || `item ${index + 1}`;
+                    if (!item.left_label || item.left_label.trim() === '') {
+                        return `Slider section "${section.title}" item "${itemLabel}" must have a left label defined.`;
+                    }
+                    if (!item.right_label || item.right_label.trim() === '') {
+                        return `Slider section "${section.title}" item "${itemLabel}" must have a right label defined.`;
+                    }
                 }
             } else if (section.slider_type === 'numeric') {
                 if (section.min_value === undefined || section.max_value === undefined) {
@@ -4975,14 +5068,17 @@ function collectPostSurvey2Configuration() {
         sectionOrder: []
     };
 
+    // Collect configuration from all dynamic sections (use the same logic as pre/post survey)
     const dynamicSections = document.querySelectorAll('#post2-dynamic-sections-container .survey-section-config');
     dynamicSections.forEach(sectionElement => {
         const sectionId = sectionElement.getAttribute('data-section');
         const enableCheckbox = sectionElement.querySelector(`#enable-${sectionId}`);
+
+        // Skip if section is not enabled
         if (!enableCheckbox || !enableCheckbox.checked) {
             return;
         }
-        
+
         // Track section order
         config.sectionOrder.push(sectionId);
 
@@ -5045,6 +5141,7 @@ function collectPostSurvey2Configuration() {
             };
         } else if (sectionType === 'freetext') {
             const freetextQuestions = [];
+
             sectionElement.querySelectorAll('.freetext-questions .freetext-question').forEach(questionDiv => {
                 const questionInput = questionDiv.querySelector('.freetext-question-input') || questionDiv.querySelector('input[type="text"]');
                 const columnLabelInput = questionDiv.querySelector('.column-label-input');
@@ -5060,6 +5157,7 @@ function collectPostSurvey2Configuration() {
                     });
                 }
             });
+
             config.sections[sectionId] = {
                 type: 'freetext',
                 enabled: true,
@@ -5067,101 +5165,298 @@ function collectPostSurvey2Configuration() {
                 questions: freetextQuestions
             };
         } else if (sectionType === 'custom') {
-            const contentElement = sectionElement.querySelector('textarea');
-            const columnLabelElement = sectionElement.querySelector('.column-label-input');
+            const customFields = [];
+            const descriptionTextarea = sectionElement.querySelector('textarea');
+
+            sectionElement.querySelectorAll('.custom-fields .field-config').forEach(fieldDiv => {
+                const labelInput = fieldDiv.querySelector('.js-custom-label') || fieldDiv.querySelector('input[type="text"]:first-of-type');
+                const typeSelect = fieldDiv.querySelector('select');
+                const optionsInput = fieldDiv.querySelector('.js-custom-options') || fieldDiv.querySelectorAll('input[type="text"]')[1];
+                const requiredCheckbox = fieldDiv.querySelector('input[type="checkbox"]');
+                const columnLabelInput = fieldDiv.querySelector('.js-custom-column-label') || fieldDiv.querySelector('.column-label-input');
+
+                if (labelInput && labelInput.value.trim()) {
+                    customFields.push({
+                        label: labelInput.value.trim(),
+                        type: typeSelect ? typeSelect.value : 'text',
+                        options: optionsInput ? optionsInput.value : '',
+                        required: requiredCheckbox ? requiredCheckbox.checked : false,
+                        column_label: columnLabelInput ? columnLabelInput.value.trim() : ''
+                    });
+                }
+            });
+
             config.sections[sectionId] = {
                 type: 'custom',
                 enabled: true,
-                title: titleInput ? titleInput.value : 'Custom Content',
-                content: contentElement ? contentElement.value : '',
-                column_label: columnLabelElement ? columnLabelElement.value.trim() : ''
+                title: titleInput ? titleInput.value : 'Custom Section',
+                description: descriptionTextarea ? descriptionTextarea.value : '',
+                fields: customFields
             };
-        } else if (sectionType === 'checkbox' || sectionType === 'dropdown') {
-            const questionElement = sectionElement.querySelector('input[type="text"]');
-            const optionsElement = sectionElement.querySelector('textarea');
-            const columnLabelElement = sectionElement.querySelector('.column-label-input');
+        } else if (sectionType === 'checkbox') {
+            const options = [];
+            const sectionTextInputs = sectionElement.querySelectorAll('.section-content > input[type="text"]');
+            const questionInput = sectionTextInputs[1];
+            const columnLabelInput = sectionElement.querySelector('.section-content > input.column-label-input');
+
+            sectionElement.querySelectorAll('.checkbox-options .option-item input[type="text"]').forEach(input => {
+                if (input.value.trim()) {
+                    options.push(input.value.trim());
+                }
+            });
+
             config.sections[sectionId] = {
-                type: sectionType,
+                type: 'checkbox',
                 enabled: true,
-                title: titleInput ? titleInput.value : (sectionType === 'checkbox' ? 'Multiple Choice' : 'Dropdown'),
-                question: questionElement ? questionElement.value : '',
-                options: optionsElement ? optionsElement.value.split('\n').filter(opt => opt.trim()) : [],
-                column_label: columnLabelElement ? columnLabelElement.value.trim() : ''
+                title: titleInput ? titleInput.value : 'Multiple Choice Selection',
+                question: questionInput ? questionInput.value : 'Please select all that apply:',
+                options: options,
+                column_label: columnLabelInput ? columnLabelInput.value.trim() : ''
+            };
+        } else if (sectionType === 'dropdown') {
+            const options = [];
+            const sectionTextInputs = sectionElement.querySelectorAll('.section-content > input[type="text"]');
+            const questionInput = sectionTextInputs[1];
+            const columnLabelInput = sectionElement.querySelector('.section-content > input.column-label-input');
+            const requiredCheckbox = sectionElement.querySelector('.section-content > input[type="checkbox"]');
+
+            sectionElement.querySelectorAll('.dropdown-options .option-item input[type="text"]').forEach(input => {
+                if (input.value.trim()) {
+                    options.push(input.value.trim());
+                }
+            });
+
+            config.sections[sectionId] = {
+                type: 'dropdown',
+                enabled: true,
+                title: titleInput ? titleInput.value : 'Selection',
+                question: questionInput ? questionInput.value : 'Please select an option:',
+                required: requiredCheckbox ? requiredCheckbox.checked : false,
+                options: options,
+                column_label: columnLabelInput ? columnLabelInput.value.trim() : ''
             };
         } else if (sectionType === 'slider') {
-            const questionElement = sectionElement.querySelector('input[type="text"]');
-            const minLabelElement = sectionElement.querySelector('.slider-min-label');
-            const maxLabelElement = sectionElement.querySelector('.slider-max-label');
-            const columnLabelElement = sectionElement.querySelector('.column-label-input');
-            config.sections[sectionId] = {
+            const sectionQuestionInput = sectionElement.querySelector('.slider-section-question-input');
+            const columnLabelInput = sectionElement.querySelector('.section-content > input.column-label-input');
+            const requiredCheckbox = sectionElement.querySelector('.section-content > input[type="checkbox"]');
+            const sliderTypeRadio = sectionElement.querySelector(`input[name="slider-type-${sectionId}"]:checked`);
+            const sliderType = sliderTypeRadio ? sliderTypeRadio.value : 'labels';
+            const sliderItems = [];
+
+            const defaultItemLeft = 'Strongly Disagree';
+            const defaultItemRight = 'Strongly Agree';
+
+            sectionElement.querySelectorAll('.slider-items .slider-item').forEach(itemDiv => {
+                const itemQuestionInput = itemDiv.querySelector('.slider-question-input');
+                const itemLeftLabelInput = itemDiv.querySelector('.slider-left-label-input');
+                const itemRightLabelInput = itemDiv.querySelector('.slider-right-label-input');
+                const itemColumnLabelInput = itemDiv.querySelector('.column-label-input');
+                const questionText = itemQuestionInput ? itemQuestionInput.value.trim() : '';
+                const leftLabelText = itemLeftLabelInput ? itemLeftLabelInput.value.trim() : '';
+                const rightLabelText = itemRightLabelInput ? itemRightLabelInput.value.trim() : '';
+
+                const itemConfig = {
+                    id: itemDiv.getAttribute('data-item-id') || generateInternalId('slider'),
+                    question: questionText,
+                    column_label: itemColumnLabelInput ? itemColumnLabelInput.value.trim() : ''
+                };
+
+                if (sliderType === 'labels') {
+                    itemConfig.left_label = leftLabelText;
+                    itemConfig.right_label = rightLabelText;
+                } else {
+                    // Avoid overriding numeric slider labels with UI defaults.
+                    if (leftLabelText && leftLabelText !== defaultItemLeft) itemConfig.left_label = leftLabelText;
+                    if (rightLabelText && rightLabelText !== defaultItemRight) itemConfig.right_label = rightLabelText;
+                }
+
+                sliderItems.push(itemConfig);
+            });
+
+            let sliderConfig = {
                 type: 'slider',
                 enabled: true,
-                title: titleInput ? titleInput.value : 'Slider Scale',
-                question: questionElement ? questionElement.value : '',
-                minLabel: minLabelElement ? minLabelElement.value : 'Low',
-                maxLabel: maxLabelElement ? maxLabelElement.value : 'High',
-                column_label: columnLabelElement ? columnLabelElement.value.trim() : ''
-            };
-        } else if (sectionType === 'image') {
-            const filePathInput = sectionElement.querySelector('.file-path-input');
-            const altTextInput = sectionElement.querySelector('.alt-text-input');
-            config.sections[sectionId] = {
-                type: 'image',
-                enabled: true,
-                title: titleInput ? titleInput.value : 'Image',
-                file_path: filePathInput ? filePathInput.value : '',
-                alt_text: altTextInput ? altTextInput.value : ''
-            };
-        } else if (sectionType === 'video') {
-            const filePathInput = sectionElement.querySelector('.file-path-input');
-            const videoUrlInput = sectionElement.querySelector('.video-url-input');
-            config.sections[sectionId] = {
-                type: 'video',
-                enabled: true,
-                title: titleInput ? titleInput.value : 'Video',
-                file_path: filePathInput ? filePathInput.value : '',
-                video_url: videoUrlInput ? videoUrlInput.value : ''
-            };
-        } else if (sectionType === 'pdf') {
-            const filePathInput = sectionElement.querySelector('.file-path-input');
-            const responseTypeSelect = sectionElement.querySelector('.pdf-response-type');
-            const responseType = responseTypeSelect ? responseTypeSelect.value : 'confirmation';
-            const responseDetails = sectionElement.querySelector(`#pdf-response-details-${sectionId}`);
-            const pdfConfig = {
-                type: 'pdf',
-                enabled: true,
-                title: titleInput ? titleInput.value : 'PDF',
-                file_path: filePathInput ? filePathInput.value : '',
-                response_type: responseType
+                title: titleInput ? titleInput.value : 'Rating Scale',
+                question: sectionQuestionInput ? sectionQuestionInput.value.trim() : '',
+                required: requiredCheckbox ? requiredCheckbox.checked : false,
+                slider_type: sliderType,
+                column_label: columnLabelInput ? columnLabelInput.value.trim() : '',
+                items: sliderItems
             };
 
-            if (responseDetails) {
-                if (responseType === 'confirmation') {
-                    const confirmationText = responseDetails.querySelector('.js-confirmation-text');
-                    const columnLabel = responseDetails.querySelector('.js-confirmation-column-label');
-                    pdfConfig.confirmation_text = confirmationText ? confirmationText.value : '';
-                    pdfConfig.column_label = columnLabel ? columnLabel.value.trim() : '';
-                } else if (responseType === 'rating') {
-                    const ratingQuestion = responseDetails.querySelector('.js-rating-question');
-                    const ratingScale = responseDetails.querySelector('.js-rating-scale');
-                    const columnLabel = responseDetails.querySelector('.js-rating-column-label');
-                    pdfConfig.rating_question = ratingQuestion ? ratingQuestion.value : '';
-                    pdfConfig.rating_scale = ratingScale ? parseInt(ratingScale.value) || 10 : 10;
-                    pdfConfig.column_label = columnLabel ? columnLabel.value.trim() : '';
-                } else if (responseType === 'text') {
-                    const textQuestion = responseDetails.querySelector('.js-text-question');
-                    const textRows = responseDetails.querySelector('.js-text-rows');
-                    const columnLabel = responseDetails.querySelector('.js-text-column-label');
-                    pdfConfig.text_question = textQuestion ? textQuestion.value : '';
-                    pdfConfig.text_rows = textRows ? parseInt(textRows.value) || 4 : 4;
-                    pdfConfig.column_label = columnLabel ? columnLabel.value.trim() : '';
-                } else if (responseType === 'checkbox') {
-                    const checkboxQuestion = responseDetails.querySelector('.js-checkbox-question');
-                    const checkboxOptions = responseDetails.querySelector('.js-checkbox-options');
-                    const columnLabel = responseDetails.querySelector('.js-checkbox-column-label');
-                    pdfConfig.checkbox_question = checkboxQuestion ? checkboxQuestion.value : '';
-                    pdfConfig.checkbox_options = checkboxOptions ? checkboxOptions.value.split('\n').filter(opt => opt.trim()) : [];
-                    pdfConfig.column_label = columnLabel ? columnLabel.value.trim() : '';
+            if (sliderType === 'labels') {
+                const labelInputs = sectionElement.querySelectorAll('.label-config input[type="text"]');
+                const stepInput = sectionElement.querySelector('.label-config input[type="number"]:nth-of-type(1)');
+                const defaultInput = sectionElement.querySelector('.label-config input[type="number"]:nth-of-type(2)');
+
+                sliderConfig.left_label = labelInputs[0] ? labelInputs[0].value : 'Strongly Disagree';
+                sliderConfig.right_label = labelInputs[1] ? labelInputs[1].value : 'Strongly Agree';
+                sliderConfig.steps = stepInput ? parseInt(stepInput.value) : 7;
+                sliderConfig.default_value = defaultInput ? parseInt(defaultInput.value) : 4;
+            } else {
+                const numericInputs = sectionElement.querySelectorAll('.numeric-config input[type="number"]');
+                sliderConfig.min_value = numericInputs[0] ? parseInt(numericInputs[0].value) : 0;
+                sliderConfig.max_value = numericInputs[1] ? parseInt(numericInputs[1].value) : 100;
+                sliderConfig.default_value = numericInputs[2] ? parseInt(numericInputs[2].value) : 50;
+            }
+
+            config.sections[sectionId] = sliderConfig;
+        } else if (sectionType === 'image') {
+            const descriptionTextarea = sectionElement.querySelector('textarea');
+            const fileInput = sectionElement.querySelector(`#image-upload-${sectionId}`);
+            const altTextInput = sectionElement.querySelector('.image-alt-text input[type="text"]');
+            const displaySizeSelect = sectionElement.querySelectorAll('select')[0];
+            const alignmentSelect = sectionElement.querySelectorAll('select')[1];
+            const requireResponseCheckbox = sectionElement.querySelector(`#require-response-${sectionId}`);
+            const responseTypeSelect = sectionElement.querySelector('.response-config select');
+
+            let imageConfig = {
+                type: 'image',
+                enabled: true,
+                title: titleInput ? titleInput.value : 'Image Display',
+                description: descriptionTextarea ? descriptionTextarea.value : '',
+                alt_text: altTextInput ? altTextInput.value : 'Image',
+                display_size: displaySizeSelect ? displaySizeSelect.value : 'medium',
+                alignment: alignmentSelect ? alignmentSelect.value : 'center',
+                require_response: requireResponseCheckbox ? requireResponseCheckbox.checked : false
+            };
+
+            const filePath = fileInput ? fileInput.getAttribute('data-file-path') : null;
+            if (filePath) {
+                imageConfig.file_path = filePath;
+            } else if (fileInput && fileInput.files.length > 0) {
+                imageConfig.file_name = fileInput.files[0].name;
+            }
+
+            if (imageConfig.require_response && responseTypeSelect) {
+                imageConfig.response_type = responseTypeSelect.value;
+                const responseDetails = sectionElement.querySelector('.response-details');
+                if (responseDetails) {
+                    if (imageConfig.response_type === 'rating') {
+                        imageConfig.rating_question = getInputValue(responseDetails.querySelector('.js-rating-question')) || 'How would you rate this image?';
+                        imageConfig.rating_scale = parseInt(getInputValue(responseDetails.querySelector('.js-rating-scale')) || '10') || 10;
+                        imageConfig.rating_column_label = getInputValue(responseDetails.querySelector('.js-rating-column-label')) || '';
+                    } else if (imageConfig.response_type === 'text') {
+                        imageConfig.text_question = getInputValue(responseDetails.querySelector('.js-text-question')) || 'What are your thoughts about this image?';
+                        imageConfig.text_rows = parseInt(getInputValue(responseDetails.querySelector('.js-text-rows')) || '4') || 4;
+                        imageConfig.text_column_label = getInputValue(responseDetails.querySelector('.js-text-column-label')) || '';
+                    } else if (imageConfig.response_type === 'checkbox') {
+                        imageConfig.checkbox_question = getInputValue(responseDetails.querySelector('.js-checkbox-question')) || 'Select all that apply to this image:';
+                        const checkboxOptionsText = getInputValue(responseDetails.querySelector('.js-checkbox-options')) || '';
+                        imageConfig.checkbox_options = checkboxOptionsText.split('\n').filter(o => o.trim());
+                        imageConfig.checkbox_column_label = getInputValue(responseDetails.querySelector('.js-checkbox-column-label')) || '';
+                    }
+                }
+            }
+
+            config.sections[sectionId] = imageConfig;
+        } else if (sectionType === 'video') {
+            const descriptionTextarea = sectionElement.querySelector('textarea');
+            const fileInput = sectionElement.querySelector(`#video-upload-${sectionId}`);
+            const urlInput = sectionElement.querySelector('.video-url-section input[type="url"]');
+            const sourceTypeSelect = sectionElement.querySelector('.video-source-options select');
+            const videoSizeSelect = sectionElement.querySelectorAll('select')[1];
+            const autoplayCheckbox = sectionElement.querySelector(`#autoplay-${sectionId}`);
+            const controlsCheckbox = sectionElement.querySelector(`#controls-${sectionId}`);
+            const loopCheckbox = sectionElement.querySelector(`#loop-${sectionId}`);
+            const requireResponseCheckbox = sectionElement.querySelector(`#require-response-${sectionId}`);
+            const responseTypeSelect = sectionElement.querySelector('.response-config select');
+
+            let videoConfig = {
+                type: 'video',
+                enabled: true,
+                title: titleInput ? titleInput.value : 'Video Display',
+                description: descriptionTextarea ? descriptionTextarea.value : '',
+                video_size: videoSizeSelect ? videoSizeSelect.value : 'medium',
+                autoplay: autoplayCheckbox ? autoplayCheckbox.checked : false,
+                controls: controlsCheckbox ? controlsCheckbox.checked : true,
+                loop: loopCheckbox ? loopCheckbox.checked : false,
+                require_response: requireResponseCheckbox ? requireResponseCheckbox.checked : false
+            };
+
+            if (sourceTypeSelect && sourceTypeSelect.value === 'url' && urlInput) {
+                videoConfig.video_url = urlInput.value;
+            } else {
+                const filePath = fileInput ? fileInput.getAttribute('data-file-path') : null;
+                if (filePath) {
+                    videoConfig.file_path = filePath;
+                } else if (fileInput && fileInput.files.length > 0) {
+                    videoConfig.file_name = fileInput.files[0].name;
+                }
+            }
+
+            if (videoConfig.require_response && responseTypeSelect) {
+                videoConfig.response_type = responseTypeSelect.value;
+                const responseDetails = sectionElement.querySelector('.response-details');
+                if (responseDetails) {
+                    if (videoConfig.response_type === 'rating') {
+                        videoConfig.rating_question = getInputValue(responseDetails.querySelector('.js-rating-question')) || 'How would you rate this video?';
+                        videoConfig.rating_scale = parseInt(getInputValue(responseDetails.querySelector('.js-rating-scale')) || '10') || 10;
+                        videoConfig.rating_column_label = getInputValue(responseDetails.querySelector('.js-rating-column-label')) || '';
+                    } else if (videoConfig.response_type === 'text') {
+                        videoConfig.text_question = getInputValue(responseDetails.querySelector('.js-text-question')) || 'What are your thoughts about this video?';
+                        videoConfig.text_rows = parseInt(getInputValue(responseDetails.querySelector('.js-text-rows')) || '4') || 4;
+                        videoConfig.text_column_label = getInputValue(responseDetails.querySelector('.js-text-column-label')) || '';
+                    } else if (videoConfig.response_type === 'checkbox') {
+                        videoConfig.checkbox_question = getInputValue(responseDetails.querySelector('.js-checkbox-question')) || 'Select all that apply to this video:';
+                        const checkboxOptionsText = getInputValue(responseDetails.querySelector('.js-checkbox-options')) || '';
+                        videoConfig.checkbox_options = checkboxOptionsText.split('\n').filter(o => o.trim());
+                        videoConfig.checkbox_column_label = getInputValue(responseDetails.querySelector('.js-checkbox-column-label')) || '';
+                    }
+                }
+            }
+
+            config.sections[sectionId] = videoConfig;
+        } else if (sectionType === 'pdf') {
+            const descriptionTextarea = sectionElement.querySelector('textarea');
+            const fileInput = sectionElement.querySelector(`#pdf-upload-${sectionId}`);
+            const displayHeightSelect = sectionElement.querySelectorAll('select')[0];
+            const displayModeSelect = sectionElement.querySelectorAll('select')[1];
+            const allowDownloadCheckbox = sectionElement.querySelector(`#allow-download-${sectionId}`);
+            const requireViewCheckbox = sectionElement.querySelector(`#require-view-${sectionId}`);
+            const requireResponseCheckbox = sectionElement.querySelector(`#require-response-${sectionId}`);
+            const responseTypeSelect = sectionElement.querySelector('.response-config select');
+
+            let pdfConfig = {
+                type: 'pdf',
+                enabled: true,
+                title: titleInput ? titleInput.value : 'PDF Display',
+                description: descriptionTextarea ? descriptionTextarea.value : '',
+                display_height: displayHeightSelect ? displayHeightSelect.value : '600',
+                display_mode: displayModeSelect ? displayModeSelect.value : 'embed',
+                allow_download: allowDownloadCheckbox ? allowDownloadCheckbox.checked : true,
+                require_view: requireViewCheckbox ? requireViewCheckbox.checked : false,
+                require_response: requireResponseCheckbox ? requireResponseCheckbox.checked : false
+            };
+
+            const filePath = fileInput ? fileInput.getAttribute('data-file-path') : null;
+            if (filePath) {
+                pdfConfig.file_path = filePath;
+            } else if (fileInput && fileInput.files.length > 0) {
+                pdfConfig.file_name = fileInput.files[0].name;
+            }
+
+            if (pdfConfig.require_response && responseTypeSelect) {
+                pdfConfig.response_type = responseTypeSelect.value;
+                const responseDetails = sectionElement.querySelector('.response-details');
+                if (responseDetails) {
+                    if (pdfConfig.response_type === 'confirmation') {
+                        pdfConfig.confirmation_text = getInputValue(responseDetails.querySelector('.js-confirmation-text')) || 'I have read and understood the document';
+                        pdfConfig.confirmation_column_label = getInputValue(responseDetails.querySelector('.js-confirmation-column-label')) || '';
+                    } else if (pdfConfig.response_type === 'rating') {
+                        pdfConfig.rating_question = getInputValue(responseDetails.querySelector('.js-rating-question')) || 'How would you rate this document?';
+                        pdfConfig.rating_scale = parseInt(getInputValue(responseDetails.querySelector('.js-rating-scale')) || '10') || 10;
+                        pdfConfig.rating_column_label = getInputValue(responseDetails.querySelector('.js-rating-column-label')) || '';
+                    } else if (pdfConfig.response_type === 'text') {
+                        pdfConfig.text_question = getInputValue(responseDetails.querySelector('.js-text-question')) || 'What are your thoughts about this document?';
+                        pdfConfig.text_rows = parseInt(getInputValue(responseDetails.querySelector('.js-text-rows')) || '4') || 4;
+                        pdfConfig.text_column_label = getInputValue(responseDetails.querySelector('.js-text-column-label')) || '';
+                    } else if (pdfConfig.response_type === 'checkbox') {
+                        pdfConfig.checkbox_question = getInputValue(responseDetails.querySelector('.js-checkbox-question')) || 'Select all that apply to this document:';
+                        const checkboxOptionsText = getInputValue(responseDetails.querySelector('.js-checkbox-options')) || '';
+                        pdfConfig.checkbox_options = checkboxOptionsText.split('\n').filter(o => o.trim());
+                        pdfConfig.checkbox_column_label = getInputValue(responseDetails.querySelector('.js-checkbox-column-label')) || '';
+                    }
                 }
             }
 
@@ -5193,6 +5488,7 @@ function savePostSurvey2Configuration() {
             };
         }
 
+        preserveSliderTemplateFields(config, mainConfig.post_survey_2);
         mainConfig.post_survey_2 = config;
         return fetch('/save-survey-config', {
             method: 'POST',
