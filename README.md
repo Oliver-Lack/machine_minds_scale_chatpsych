@@ -132,7 +132,7 @@ The AI can express its emotions.
   Fake - Natural  
   Machinelike - Humanlike  
   Unconscious - Conscious  
-  Artificial - Lifelike    
+  Artificial - Lifelike  
   Moving Rigidly - Moving Elegantly  
   
   **Animacy**  
@@ -214,6 +214,8 @@ The AI can express its emotions.
   Make a wish  
   
   *Notes:* The originality of the AMS-Q lies in comparing the attribution of mental states between human and nonhuman agents by also administering pictures of nonhuman agents as stimuli. In this sense, the human picture is used as a baseline to assess, through comparison, the level of mental anthropomorphization of nonhuman agents.  
+
+  ### 
   
   ## Moral ascription scales  
   
@@ -303,8 +305,11 @@ The AI can express its emotions.
   The AI is reponsible for what it said to you during the wordgame.  
   (moral responsibility connected to moral agency predicted by high agency dimension)  
   
+  ## Construct Validity
+  - Should we fit a Rasch model? 
   **Individual Differences in Anthropomorphism Questionnaire (IDAQ)**  
   Do we need this administered pre-  as well though?  
+  Should this be used to fit a Rasch model (As the theta, which is the anthropmorphism tendency parameter)? 
 
 # Wordgame instructions
 You are about to be connected with a new experimental Artificial Intelligence (AI). It has been created by a cutting-edge lab in the leading Australian Institute for Machine Learning.  
