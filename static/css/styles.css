@@ -3750,11 +3750,24 @@ select option:checked {
   transition: all 0.2s ease;
 }
 
+/* Untouched sliders: dim grey knob until participant interacts */
+.survey-slider[data-slider-interacted="false"]::-webkit-slider-thumb {
+  background: #777;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
 .survey-slider::-webkit-slider-thumb:hover,
 .survey-slider:active::-webkit-slider-thumb {
   background: #1a252f;
   transform: scale(1.1);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.survey-slider[data-slider-interacted="false"]::-webkit-slider-thumb:hover,
+.survey-slider[data-slider-interacted="false"]:active::-webkit-slider-thumb {
+  background: #777;
+  transform: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 .survey-slider::-moz-range-thumb {
@@ -3768,11 +3781,23 @@ select option:checked {
   transition: all 0.2s ease;
 }
 
+.survey-slider[data-slider-interacted="false"]::-moz-range-thumb {
+  background: #777;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
 .survey-slider::-moz-range-thumb:hover,
 .survey-slider:active::-moz-range-thumb {
   background: #1a252f;
   transform: scale(1.1);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.survey-slider[data-slider-interacted="false"]::-moz-range-thumb:hover,
+.survey-slider[data-slider-interacted="false"]:active::-moz-range-thumb {
+  background: #777;
+  transform: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 .slider-value-display {

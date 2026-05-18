@@ -497,7 +497,7 @@ def litellm_api_request(model="gpt-4.1",
                        presence_penalty=0,
                        frequency_penalty=0,
                        max_tokens=300,
-                       logprobs=True,
+                       logprobs=False,
                        reasoning_effort=None,
                        tools=None,
                        tool_choice=None):
@@ -519,7 +519,7 @@ def litellm_api_request(model="gpt-4.1",
             params["presence_penalty"] = presence_penalty
             params["frequency_penalty"] = frequency_penalty
             if logprobs and "o1" not in model:
-                params["logprobs"] = True
+                params["logprobs"] = False
         elif "claude" in model:
             # Anthropic models don't support presence/frequency penalties
             # Anthropic API only allows temperature OR top_p, not both

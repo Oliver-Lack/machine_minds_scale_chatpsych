@@ -3369,10 +3369,25 @@ def generate_survey_html_content(config, preview=False):
     sections = config.get('sections', {})
     settings = config.get('settings', {})
     randomize_items = settings.get('randomizeItems', False)
-    
-    for section_id, section_config in sections.items():
-        if not section_config.get('enabled', False):
-            continue
+    randomize_sections = settings.get('randomizeSections', False)
+
+    configured_order = config.get('sectionOrder')
+    if isinstance(configured_order, list) and configured_order:
+        section_ids = [section_id for section_id in configured_order if section_id in sections]
+    else:
+        section_ids = list(sections.keys())
+
+    enabled_section_ids = [
+        section_id for section_id in section_ids
+        if isinstance(sections.get(section_id), dict) and sections[section_id].get('enabled', False)
+    ]
+
+    if randomize_sections and enabled_section_ids:
+        enabled_section_ids = enabled_section_ids.copy()
+        random.shuffle(enabled_section_ids)
+
+    for section_id in enabled_section_ids:
+        section_config = sections.get(section_id, {})
             
         section_type = section_config.get('type', section_id.split('-')[0])
         
@@ -3484,10 +3499,25 @@ def generate_post_survey_html_content(config, quit_redirection_link, finish_redi
     sections = config.get('sections', {})
     settings = config.get('settings', {})
     randomize_items = settings.get('randomizeItems', False)
-    
-    for section_id, section_config in sections.items():
-        if not section_config.get('enabled', False):
-            continue
+    randomize_sections = settings.get('randomizeSections', False)
+
+    configured_order = config.get('sectionOrder')
+    if isinstance(configured_order, list) and configured_order:
+        section_ids = [section_id for section_id in configured_order if section_id in sections]
+    else:
+        section_ids = list(sections.keys())
+
+    enabled_section_ids = [
+        section_id for section_id in section_ids
+        if isinstance(sections.get(section_id), dict) and sections[section_id].get('enabled', False)
+    ]
+
+    if randomize_sections and enabled_section_ids:
+        enabled_section_ids = enabled_section_ids.copy()
+        random.shuffle(enabled_section_ids)
+
+    for section_id in enabled_section_ids:
+        section_config = sections.get(section_id, {})
             
         section_type = section_config.get('type', section_id.split('-')[0])
         
@@ -3899,11 +3929,29 @@ def generate_slider_section(config, section_id):
                     <span id="{value_id}">{default_val}</span>
                 </div>
                 <script>
-                    document.getElementById('{slider_id}').oninput = function() {{
-                        document.getElementById('{value_id}').textContent = this.value;
-                        this.setAttribute('data-slider-interacted', 'true');
-                        updateNextButton();
-                    }}
+                    (function() {{
+                        const slider = document.getElementById('{slider_id}');
+                        const valueEl = document.getElementById('{value_id}');
+                        if (!slider || !valueEl) return;
+
+                        function markInteracted() {{
+                            if (slider.getAttribute('data-slider-interacted') === 'true') return;
+                            slider.setAttribute('data-slider-interacted', 'true');
+                            if (typeof updateNextButton === 'function') updateNextButton();
+                        }}
+
+                        slider.addEventListener('input', function() {{
+                            valueEl.textContent = slider.value;
+                            markInteracted();
+                        }});
+
+                        // Count a click/tap (even without moving) as selecting the current position.
+                        const markOnPointer = function() {{ markInteracted(); }};
+                        slider.addEventListener('pointerdown', markOnPointer, {{ passive: true, once: true }});
+                        slider.addEventListener('mousedown', markOnPointer, {{ passive: true, once: true }});
+                        slider.addEventListener('touchstart', markOnPointer, {{ passive: true, once: true }});
+                        slider.addEventListener('click', markOnPointer, {{ passive: true, once: true }});
+                    }})();
                 </script>
 '''
 
@@ -3928,11 +3976,29 @@ def generate_slider_section(config, section_id):
                     <span id="{value_id}">{default_val}</span>
                 </div>
                 <script>
-                    document.getElementById('{slider_id}').oninput = function() {{
-                        document.getElementById('{value_id}').textContent = this.value;
-                        this.setAttribute('data-slider-interacted', 'true');
-                        updateNextButton();
-                    }}
+                    (function() {{
+                        const slider = document.getElementById('{slider_id}');
+                        const valueEl = document.getElementById('{value_id}');
+                        if (!slider || !valueEl) return;
+
+                        function markInteracted() {{
+                            if (slider.getAttribute('data-slider-interacted') === 'true') return;
+                            slider.setAttribute('data-slider-interacted', 'true');
+                            if (typeof updateNextButton === 'function') updateNextButton();
+                        }}
+
+                        slider.addEventListener('input', function() {{
+                            valueEl.textContent = slider.value;
+                            markInteracted();
+                        }});
+
+                        // Count a click/tap (even without moving) as selecting the current position.
+                        const markOnPointer = function() {{ markInteracted(); }};
+                        slider.addEventListener('pointerdown', markOnPointer, {{ passive: true, once: true }});
+                        slider.addEventListener('mousedown', markOnPointer, {{ passive: true, once: true }});
+                        slider.addEventListener('touchstart', markOnPointer, {{ passive: true, once: true }});
+                        slider.addEventListener('click', markOnPointer, {{ passive: true, once: true }});
+                    }})();
                 </script>
 '''
 
