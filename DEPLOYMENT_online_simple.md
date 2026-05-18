@@ -145,7 +145,8 @@ cat /srv/chatpsych/data/server_logs/server_metrics.json | jq '.[-5:]'
 
 **Download logs to local machine:**
 ```bash
-scp -i "chatpsych.pem" ubuntu@your-server-domain:/srv/chatpsych/data/server_logs/*.json ./logs/
+mkdir -p ~/Desktop/server_logs
+scp -i "chatpsych.pem" ubuntu@your-server-domain:/srv/chatpsych/data/server_logs/*.json ~/Desktop/server_logs/
 ```
 
 

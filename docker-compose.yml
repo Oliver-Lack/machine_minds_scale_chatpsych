@@ -15,7 +15,6 @@ services:
       - ./certs:/etc/nginx/certs:rw
       - ./vhost.d:/etc/nginx/vhost.d:rw
       - ./html:/usr/share/nginx/html:rw
-      - ./conf.d/upload-size.conf:/etc/nginx/conf.d/upload-size.conf:ro
 
   letsencrypt:
     image: nginxproxy/acme-companion
