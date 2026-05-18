@@ -2512,26 +2512,57 @@ function uploadFormFile(file, type) {
 }
 
 function saveSurveyConfiguration() {
-    const config = collectSurveyConfiguration();
+    const newPreConfig = collectSurveyConfiguration();
 
     // Validate configuration before saving
-    const validationError = validateSurveyConfiguration(config);
+    const validationError = validateSurveyConfiguration(newPreConfig);
     if (validationError) {
         showFeedback('survey-feedback', validationError, 'error');
         return;
     }
 
-    // Preserve any slider template fields that may not be exposed in the UI
+    // IMPORTANT: merge into existing config so saving the pre-survey does not wipe post-surveys
     fetch('/get-survey-config')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load existing survey configuration');
+            }
+            return response.json();
+        })
         .then(existingConfig => {
-            preserveSliderTemplateFields(config, existingConfig);
+            if (existingConfig && existingConfig.error) {
+                throw new Error(existingConfig.error);
+            }
+
+            let mergedConfig = existingConfig;
+            if (!mergedConfig || typeof mergedConfig !== 'object') {
+                mergedConfig = {
+                    title: 'Survey Form',
+                    information: { title: '', content: '' },
+                    consent: { content: '' },
+                    settings: {},
+                    sections: {},
+                    sectionOrder: []
+                };
+            }
+
+            // Preserve any slider template fields that may not be exposed in the UI
+            preserveSliderTemplateFields(newPreConfig, mergedConfig);
+
+            // Overwrite only the pre-survey keys; keep post_survey/post_survey_2 and any other keys
+            mergedConfig.title = newPreConfig.title;
+            mergedConfig.information = newPreConfig.information;
+            mergedConfig.consent = newPreConfig.consent;
+            mergedConfig.settings = newPreConfig.settings;
+            mergedConfig.sections = newPreConfig.sections;
+            mergedConfig.sectionOrder = newPreConfig.sectionOrder;
+
             return fetch('/save-survey-config', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(config)
+                body: JSON.stringify(mergedConfig)
             });
         })
         .then(response => response.json())
@@ -2543,7 +2574,7 @@ function saveSurveyConfiguration() {
             }
         })
         .catch(error => {
-            showFeedback('survey-feedback', 'Error saving configuration', 'error');
+            showFeedback('survey-feedback', 'Error saving configuration: ' + (error && error.message ? error.message : ''), 'error');
         });
 }
 

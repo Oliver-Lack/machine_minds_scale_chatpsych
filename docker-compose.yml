@@ -8,12 +8,14 @@ services:
       - "443:443"
     environment:
       - TRUST_DOWNSTREAM_PROXY=false
+      - CLIENT_MAX_BODY_SIZE=20M
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./acme:/etc/acme.sh
       - ./certs:/etc/nginx/certs:rw
       - ./vhost.d:/etc/nginx/vhost.d:rw
       - ./html:/usr/share/nginx/html:rw
+      - ./conf.d/upload-size.conf:/etc/nginx/conf.d/upload-size.conf:ro
 
   letsencrypt:
     image: nginxproxy/acme-companion
@@ -22,7 +24,7 @@ services:
       - nginx-proxy
     restart: always
     environment:
-      - DEFAULT_EMAIL=youremail@example.com         # CHANGE THIS for your email
+      - DEFAULT_EMAIL=oliver.lack.au@gmail.com         # CHANGE THIS for your email
       - NGINX_PROXY_CONTAINER=nginx-proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -37,14 +39,15 @@ services:
       - .env
     restart: always
     environment:
-      - VIRTUAL_HOST=chatpsych-playground.org       # CHANGE THIS for your domain
-      - LETSENCRYPT_HOST=chatpsych-playground.org   # CHANGE THIS for your domain
-      - LETSENCRYPT_EMAIL=youremail@example.com     # CHANGE THIS for your email
+      - VIRTUAL_HOST=study-gateway.org     # CHANGE THIS for your domain
+      - LETSENCRYPT_HOST=study-gateway.org   # CHANGE THIS for your domain
+      - LETSENCRYPT_EMAIL=oliver.lack.au@gmail.com     # CHANGE THIS for your email
+      - CLIENT_MAX_BODY_SIZE=20M
     expose:
       - "8000"
     volumes:
       - /srv/chatpsych/data:/app/data:rw
-      
+
 # optional: use named volume for internal docker-only data (commented out here since you use host mount)
 # volumes:
 #   data:
